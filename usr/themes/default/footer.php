@@ -11,8 +11,8 @@
         </div>
         <p> &copy; <?php echo date('Y');?> <a href="<?php $this->options->siteUrl(); ?>" target="_blank"> <?php $this->options->title() ?> </a>
             <?php _e(' / Powered by <a href="http://www.typecho.org" target="_blank">Typecho</a>'); ?>
-            <?php if ($this->options->icpNum): ?>
-               / <a href="http://www.miitbeian.gov.cn/" target="blank"><?php $this->options->icpNum(); ?></a>
+            <?php if ($this->options->siteIcp): ?>
+               / <a href="http://www.miitbeian.gov.cn/" target="blank"><?php $this->options->siteIcp(); ?></a>
             <?php endif; ?>
     	</p> 
     </div>

@@ -13,11 +13,11 @@ class Forum_Options extends Widget_Abstract_Options implements Widget_Interface_
         $form = new Typecho_Widget_Helper_Form($this->security->getIndex('/action/options-forum'),
         Typecho_Widget_Helper_Form::POST_METHOD);
         
-		$siteIcp = new Typecho_Widget_Helper_Form_Element_Text('siteIcp', NULL, NULL, _t('网站备案号'), _t('在这里填入网站备案号'));
+		$siteIcp = new Typecho_Widget_Helper_Form_Element_Text('siteIcp', NULL, $this->options->siteIcp, _t('网站备案号'), _t('在这里填入网站备案号'));
 		$siteIcp->input->setAttribute('class', 'w-60');
 		$form->addInput($siteIcp);
     
-		$siteStat = new Typecho_Widget_Helper_Form_Element_Textarea('siteStat', NULL, NULL, _t('统计代码'), _t('在这里填入网站统计代码'));
+		$siteStat = new Typecho_Widget_Helper_Form_Element_Textarea('siteStat', NULL, $this->options->siteStat, _t('统计代码'), _t('在这里填入网站统计代码'));
 		$form->addInput($siteStat);
 		
         $smtp_host = new Typecho_Widget_Helper_Form_Element_Text('smtpHost', NULL, $this->options->smtpHost, _t('SMTP地址'), _t('请填写 SMTP 服务器地址'));
@@ -39,7 +39,7 @@ class Forum_Options extends Widget_Abstract_Options implements Widget_Interface_
         $from_mail = new Typecho_Widget_Helper_Form_Element_Text('smtpMail', NULL, $this->options->smtpMail, _t('发件人EMAIL'));
 		$from_mail->input->setAttribute('class', 'w-60');
         $form->addInput($from_mail->addRule('email', _t('电子邮箱格式错误')));
-        $from_name = new Typecho_Widget_Helper_Form_Element_Text('smtpMame', NULL, $this->options->smtpMame, _t('发件人名称'));
+        $from_name = new Typecho_Widget_Helper_Form_Element_Text('smtpName', NULL, $this->options->smtpName, _t('发件人名称'));
 		$from_name->input->setAttribute('class', 'w-60');
         $form->addInput($from_name);
         
@@ -83,7 +83,7 @@ class Forum_Options extends Widget_Abstract_Options implements Widget_Interface_
         if ($this->form()->validate()) {
             $this->response->goBack();
         }
-        $settings = $this->request->from('smtpHost','smtpPort', 'smtpUser', 'smtpPass', 'smtpMail', 'smtpName');
+        $settings = $this->request->from('siteIcp','siteStat','smtpHost','smtpPort', 'smtpUser', 'smtpPass', 'smtpMail', 'smtpName');
         
         foreach ($settings as $name => $value) {
             $this->update(array('value' => $value), $this->db->sql()->where('name = ?', $name));
