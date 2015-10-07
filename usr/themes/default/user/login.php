@@ -8,11 +8,11 @@
     <div class="head">
         <div class="location">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
     </div>
     <div class="cell">
-   <form accept-charset="UTF-8" action="<?php $this->options->someAction('login'); ?>" class="form user-form" method="post">
+   <form accept-charset="UTF-8" action="<?php $this->options->loginAction(); ?>" class="form user-form" method="post">
     <div id="error-dialog"></div>
     <div class="field">
 		<label for="name">用户名</label>

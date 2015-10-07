@@ -6,7 +6,7 @@
 <div class="user-profile" id="main" role="main">
     <?php $this->need('user/widget_info.php'); ?>
     <div class="box">
-        <?php Typecho_Widget::widget('Forum_User_Posts')->to($posts); ?>
+        <?php $this->widget('Widget_Contents_Post_List@UserPostList','page=1&uid='.$this->ucenter()->uid)->to($posts); ?>
         <?php if($posts->have()): ?>
         <?php while($posts->next()): ?>
             <article class="cell post">
@@ -19,7 +19,7 @@
     						<li><?php $posts->tags(','); ?>&nbsp;•&nbsp;</li>
     					<?php endif;?>
                     <li><a href="<?php $posts->author->ucenter(); ?>"><?php $posts->author->name(); ?></a>&nbsp;•&nbsp;</li>
-    				<li><span><?php echo Forum_Common::formatTime($posts->created,'Y-m-d H:i:s'); ?></span></li>
+    				<li><span><?php $posts->dateWord(); ?></span></li>
     				<?php if($posts->lastUid):?>
     				<li>&nbsp;•&nbsp;最后回复来自：<strong><a href="<?php $posts->lastAuthor->ucenter();?>"><?php $posts->lastAuthor->name();?></a></strong></li>
     				<?php endif;?>

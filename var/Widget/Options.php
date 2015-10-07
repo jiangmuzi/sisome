@@ -193,7 +193,7 @@ class Widget_Options extends Typecho_Widget
      */
     protected function ___loginUrl()
     {
-        return Typecho_Common::url('login.php', $this->adminUrl);
+        return Typecho_Common::url('login', $this->rootUrl);
     }
 
     /**
@@ -208,7 +208,6 @@ class Widget_Options extends Typecho_Widget
             Typecho_Router::url('do', array('action' => 'login', 'widget' => 'Login'),
             Typecho_Common::url('index.php', $this->rootUrl)));
     }
-
     /**
      * 获取注册地址
      *
@@ -586,8 +585,9 @@ class Widget_Options extends Typecho_Widget
 		 
 	}
 	public function someAction($route,$params=null,$echo=true){
+	    $params['action'] = $route;
 		$url = $this->widget('Widget_Security')->getTokenUrl(
-            Typecho_Router::url($route,$params,$this->index));
+            Typecho_Router::url('do',$params,$this->index));
 		if($echo){
 			echo $url;
 		}else{

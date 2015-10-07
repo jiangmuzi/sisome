@@ -50,12 +50,7 @@ abstract class Widget_Abstract extends Typecho_Widget
      * @var Typecho_Db
      */
     protected $db;
-
-    /**
-     * 模版目录
-     * @var string
-     */
-    private $_themeDir;
+    
     /**
      * 构造函数,初始化组件
      *
@@ -130,30 +125,4 @@ abstract class Widget_Abstract extends Typecho_Widget
      */
     abstract public function delete(Typecho_Db_Query $condition);
     
-    public function metaTitle($slug=null){
-        echo empty($this->_metaTitle) ? '' : $this->_metaTitle . $slug;
-    }
-    protected function setMetaTitle($metaTitle){
-        $this->_metaTitle = $metaTitle;
-    }
-    public function render($themeFile){
-        /** 文件不存在 */
-        if (!file_exists($this->_themeDir . $themeFile)) {
-            Typecho_Common::error(500);
-        }
-    
-        /** 输出模板 */
-        require_once $this->_themeDir . $themeFile;
-    }
-    /**
-     * 获取主题文件
-     *
-     * @access public
-     * @param string $fileName 主题文件
-     * @return void
-     */
-    public function need($fileName){
-        /** 输出模板 */
-        require_once $this->_themeDir . $fileName;
-    }
 }

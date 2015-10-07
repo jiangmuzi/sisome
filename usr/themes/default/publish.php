@@ -9,7 +9,7 @@
                     <p>请在标题中描述内容要点。如果一件事情在标题的长度内就已经可以说清楚，那就没有必要写正文了。</p>
                 </li>
                 <li><p>正文</p>
-                    <p>可以在正文中为你要发布的主题添加更多细节。V2EX 支持 <span style="font-family: Consolas, 'Panic Sans', mono"><a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">GitHub Flavored Markdown</a></span> 文本标记语法。</p>
+                    <p>可以在正文中为你要发布的主题添加更多细节。<?php $this->options->title();?> 支持 <span style="font-family: Consolas, 'Panic Sans', mono"><a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">GitHub Flavored Markdown</a></span> 文本标记语法。</p>
                     <p>在正式提交之前，你可以点击本页面左下角的“预览主题”来查看 Markdown 正文的实际渲染效果。</p>
                 </li>
                 <li><p>选择节点</p>
@@ -26,7 +26,8 @@
         <div class="inner tips">
             <ul style="margin-top: 0px;">
                 <li><p>尊重原创</p>
-                    <p>请不要在 V2EX 发布任何盗版下载链接，包括软件、音乐、电影等等。V2EX 是创意工作者的社区，我们尊重原创。</p>
+                    <p>请不要在 <?php $this->options->title();?> 发布任何盗版下载链接，包括软件、音乐、电影等等。
+                    <?php $this->options->title();?> 是创意工作者的社区，我们尊重原创。</p>
                 </li>
                 <li><p>友好互助</p>
                     <p>保持对陌生人的友善。用知识去帮助别人。</p>
@@ -81,7 +82,12 @@
     </div>
     <div class="cell">
         <button class="btn" type="button" onclick="prevTopic();" ><i class="fa fa-eye"></i> <?php _e('预览主题');?></button>
-        <button class="btn fr" type="submit" ><i class="fa fa-paper-plane"></i> <?php _e('发布主题');?></button>
+        <?php if($this->have()):?>
+        <button class="btn fr" type="submit" name="do" value="save" ><i class="fa fa-paper-plane"></i> <?php _e('保存主题');?></button>
+        <?php else:?>
+        <button class="btn fr" type="submit" name="do" value="publish" ><i class="fa fa-paper-plane"></i> <?php _e('发布主题');?></button>
+        <?php endif;?>
+        
     </div>
     </form>
     <div id="topic_preview_box"></div>

@@ -7,9 +7,9 @@
     <div class="box">
         <div class="head">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
-        <?php $this->widget('Forum_User_Favorites','type=tag')->to($nodes);?>
+        <?php $this->widget('Widget_Favorites_List','type=tag')->to($nodes);?>
         <?php if($nodes->have()):?>
         <div class="cell-gird">
         <?php while ($nodes->next()):?>

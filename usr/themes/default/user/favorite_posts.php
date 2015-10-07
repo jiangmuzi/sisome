@@ -7,9 +7,9 @@
     <div class="box">
         <div class="head">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
-        <?php $this->widget('Forum_User_Favorites','type=post')->to($posts);?>
+        <?php $this->widget('Widget_Favorites_List','type=post')->to($posts);?>
         <?php if($posts->have()):?>
         <?php while ($posts->next()):?>
     		<article class="cell post">
@@ -22,7 +22,7 @@
     						<li><?php $posts->content->tags(','); ?>&nbsp;•&nbsp;</li>
     					<?php endif;?>
                     <li><a href="<?php $posts->content->author->ucenter(); ?>"><?php $posts->content->author->name(); ?></a>&nbsp;•&nbsp;</li>
-    				<li><span><?php echo Forum_Common::formatTime($posts->content->created,'Y-m-d H:i:s'); ?></span></li>
+    				<li><span><?php $posts->content->dateWord(); ?></span></li>
     				<?php if($posts->content->lastUid):?>
     				<li>&nbsp;•&nbsp;最后回复来自：<strong><a href="<?php $posts->content->lastAuthor->ucenter();?>"><?php $posts->content->lastAuthor->name();?></a></strong></li>
     				<?php endif;?>

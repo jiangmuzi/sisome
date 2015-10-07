@@ -32,10 +32,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 				<a class="add_favorite" <?php if($this->parameter->isFavorite):?>data-fid="<?php $this->parameter->isFavorite();?>"<?php endif;?> data-type="tag" data-slug="<?php echo $this->getArchiveSlug();?>" href="javascript:;"><?php if($this->parameter->isFavorite){_e('取消收藏');}else{_e('加入收藏');}?></a>
 			<?php endif;?>
 		</div>
-        
     </div>
 	<?php if($this->is('category') && $this->getArchiveMid()):?>
-	<?php Typecho_Widget::widget('Forum_List_Tag@ChildTags_'.$this->getArchiveMid(), 'sort=count&limit=10&parent='.$this->getArchiveMid())->to($tags); ?>
+	<?php Typecho_Widget::widget('Widget_Metas_List@ChildTags_'.$this->getArchiveMid(), 'sort=count&limit=10&parent='.$this->getArchiveMid())->to($tags); ?>
 		<?php if($tags->have()):?>
 		<div class="cell" style="background-color: #f9f9f9; padding: 5px 10px;">
 		  <div class="nodes-item">
@@ -67,7 +66,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 					<?php endif;?>
                     
                     <li><a href="<?php $this->author->ucenter(); ?>"><?php $this->author->name(); ?></a>&nbsp;•&nbsp;</li>
-    				<li><span><?php echo Forum_Common::formatTime($this->created); ?></span></li>
+    				<li><span><?php $this->dateWord(); ?></span></li>
 					<?php if($this->lastUid):?>
 					<li>&nbsp;•&nbsp;最后回复来自：<strong><a href="<?php $this->lastAuthor->ucenter();?>"><?php $this->lastAuthor->name();?></a></strong></li>
 					<?php endif;?>

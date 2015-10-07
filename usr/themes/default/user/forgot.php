@@ -8,7 +8,7 @@
     <div class="head">
         <div class="location">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
     </div>
     <div class="cell">
@@ -16,7 +16,7 @@
         <p><?php _e('密码重置链接已发送到你的邮箱，请及时查收并修改自己的密码');?></p>
 		  <a href="<?php $this->some->loginUrl();?>"><?php _e('现在登录');?></a> → 
     <?php else:?>
-   <form accept-charset="UTF-8" action="<?php $this->forgotAction(); ?>" class="form" method="post">
+   <form accept-charset="UTF-8" action="<?php $this->options->someAction('forgot'); ?>" class="form" method="post">
     <div id="error-dialog"></div>
     <div class="field">
 		<label for="name">用户名</label>
@@ -28,7 +28,7 @@
     </div>
     <div class="field">
 	   <label>验证码</label>
-        <p class="field-ipt" style="margin:0;"><img class="captcha" src="<?php $this->some->captcha();?>"></p> 
+        <p class="field-ipt" style="margin:0;"><img class="captcha" src="<?php $this->options->someUrl('captcha');?>"></p> 
     </div> 
     <div class="field">
 	<label>&nbsp;</label>
@@ -36,7 +36,7 @@
     </div> 
     <div class="field">
         <label>&nbsp;</label>
-        <button class="btn fieid-ipt" type="submit">继续</button>
+        <button class="btn fieid-ipt" type="submit" name="do" value="forgot">继续</button>
      </div>
    </form>
    <?php endif;?>

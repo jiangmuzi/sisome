@@ -1,14 +1,26 @@
 <?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+
 // +----------------------------------------------------------------------
-// | SISOME 应用入口文件
+// | SISOME 消息基类
 // +----------------------------------------------------------------------
 // | Copyright (c) 2015 http://www.sisome.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Author: 绛木子 <master@lixianhua.com>
 // +----------------------------------------------------------------------
+
 class Widget_Abstract_Messages extends Widget_Abstract{
     
-    
+    /**
+     * 输出词义化日期
+     *
+     * @access protected
+     * @return string
+     */
+    protected function ___dateWord()
+    {
+        return $this->date->word();
+    }
     /**
      * 通用过滤器
      *
@@ -17,8 +29,9 @@ class Widget_Abstract_Messages extends Widget_Abstract{
      * @return array
      */
     public function filter(array $value){
+        $value['date'] = new Typecho_Date($value['created']);
         if($value['type']=='comment' || $value['type']=='at'){
-			$comment = $this->widget('Some_Query_Comment@coid_'.$value['srcId'],array('coid'=>$value['srcId']));
+			$comment = $this->widget('Widget_Comments_Query@coid_'.$value['srcId'],array('coid'=>$value['srcId']));
 			$value['author'] = $comment->poster;
 			$value['title'] = $comment->parentContent['title'];
 			$value['permalink'] = $comment->permalink;
@@ -95,4 +108,15 @@ class Widget_Abstract_Messages extends Widget_Abstract{
         
     }
 
+    /**
+     * 输出文章发布日期
+     *
+     * @access public
+     * @param string $format 日期格式
+     * @return void
+     */
+    public function date($format = NULL)
+    {
+        echo $this->date->format(empty($format) ? $this->options->commentDateFormat : $format);
+    }
 }

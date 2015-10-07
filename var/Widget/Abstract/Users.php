@@ -152,7 +152,12 @@ class Widget_Abstract_Users extends Widget_Abstract
         $value['feedAtomUrl'] = $routeExists ? Typecho_Router::url('author', $value, $this->options->feedAtomUrl) : '#';
 
 		// modified_by_jiangmuzi 2015.09.22
-		$avatar = Forum_Common::parseUserAvatar($value['uid']);
+		
+		if(!empty($value['extend'])){
+			$value['extend'] = unserialize($value['extend']);
+		}
+		
+		$avatar = Widget_Common::parseUserAvatar($value['uid']);
 		$value = array_merge($value,$avatar);
 		$value['ucenter'] = $this->options->someUrl('ucenter',array('u'=>$value['name']),false);
 		// end modified

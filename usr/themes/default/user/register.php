@@ -18,7 +18,7 @@
     <div class="head">
         <div class="location">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a>  &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
     </div>
     <div class="cell">
@@ -57,7 +57,7 @@
    <div id="accounts-form">
         <p>社交帐号登录</p>
         <div class="sns-btn">
-            <?php Typecho_Widget::widget('Forum_Oauth')->parseActiveSns();?>
+            <?php Typecho_Widget::widget('Widget_Users_Oauth')->parseActiveSns();?>
         </div>
     </div>
    <?php endif; ?>

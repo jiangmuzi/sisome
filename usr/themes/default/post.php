@@ -15,7 +15,7 @@
 		<h1 class="post-title"><?php $this->title() ?></h1>
         <ul class="post-meta">
             <li><a href="<?php $this->author->ucenter(); ?>"><?php $this->author(); ?></a>&nbsp;·&nbsp;</li>
-    		<li><span><?php echo Forum_Common::formatTime($this->created); ?></span>&nbsp;·&nbsp;</li>
+    		<li><span><?php $this->dateWord(); ?></span>&nbsp;·&nbsp;</li>
     		<li><span><?php $this->viewsNum(); _e('次点击');?></span></li>
     		<?php if($this->user->hasLogin() && $this->user->uid==$this->author->uid):?>
     		  <li>&nbsp;·&nbsp;<span><a href="<?php $this->options->index('publish?cid='.$this->cid);?>"><?php _e('编辑');?></a></span></li>

@@ -78,7 +78,7 @@ $(function(){
 		$(this).attr('src',src+'?'+Math.random());
 		return false;
 	});
-	ajaxLoadComments();
+	//ajaxLoadComments();
 	
 	backToTopFun();
 
@@ -90,9 +90,9 @@ function replyAt(name){
 	if(name===undefined || name=='') return false;
 	
 	name ='@'+name+' ';
-	var text = $('#textarea').text();
+	var text = $('#textarea').val();
 	text += text=='' ? name : '\n'+name;
-	$('#textarea').text(text);
+	$('#textarea').val(text);
 	return false;
 }
 //showAlert('成功登录','success',3000)

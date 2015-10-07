@@ -10,11 +10,13 @@ if (isset($post) || isset($page)) {
         Typecho_Widget::widget('Widget_Contents_Attachment_Unattached')->to($attachment);
     }
 }
+
 ?>
 
 <div id="upload-panel" class="p">
     <div class="upload-area" draggable="true"><?php _e('拖放文件到这里<br>或者 %s选择文件上传%s', '<a href="###" class="upload-file">', '</a>'); ?></div>
     <ul id="file-list">
+    <?php if($attachment->have()):?>
     <?php while ($attachment->next()): ?>
         <li data-cid="<?php $attachment->cid(); ?>" data-url="<?php echo $attachment->attachment->url; ?>" data-image="<?php echo $attachment->attachment->isImage ? 1 : 0; ?>"><input type="hidden" name="attachment[]" value="<?php $attachment->cid(); ?>" />
             <a class="insert" title="<?php _e('点击插入文件'); ?>" href="###"><?php $attachment->title(); ?></a>
@@ -25,6 +27,7 @@ if (isset($post) || isset($page)) {
             </div>
         </li>
     <?php endwhile; ?>
+    <?php endif; ?>
     </ul>
 </div>
 

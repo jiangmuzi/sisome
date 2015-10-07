@@ -14,6 +14,6 @@
         <strong><?php _e('社交帐号登录'); ?></strong>
     </div>
     <div class="cell sns-btn">
-        <?php Typecho_Widget::widget('Forum_Oauth')->parseActiveSns();?>
+        <?php Typecho_Widget::widget('Widget_Users_Oauth')->parseActiveSns();?>
     </div>
 </section>
