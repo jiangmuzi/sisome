@@ -139,6 +139,6 @@ class Widget_Abstract_Favorites extends Widget_Abstract{
      */
     public function date($format = NULL)
     {
-        echo $this->date->format(empty($format) ? $this->options->commentDateFormat : $format);
+        echo $this->date->format(empty($format) ? 'Y-m-d H:i:s' : $format);
     }
 }

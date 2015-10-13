@@ -26,7 +26,7 @@ function threadedComments($comments, $singleCommentOptions){
     echo '<a href="javascript:replyAt(\''.$comments->poster->name.'\');">' . $singleCommentOptions->replyWord . '</a>';
     echo '</div><p><a href="'.$comments->realAuthorUrl.'">'.$comments->poster->name.'</a>';
     echo '<span class="reply-time">';
-    $comments->date($singleCommentOptions->dateFormat);
+    $comments->dateWord();
     echo '</span></p><div class="reply-content">';
     $comments->content();
     echo '</div></div>';

@@ -33,7 +33,7 @@
 			<?php if($messages->type=='at'):?>
                 <div class="cell" style="background-color: #EDF3F5;">
                 <a href="<?php $messages->author->ucenter();?>" target="_blank"><?php $messages->author->name();?></a>
-                <?php _e('在'); _e(Widget_Common::formatTime($messages->created));_e('回复中@你：');?>
+                <?php _e('在'); $messages->dateWord();_e('回复中@你：');?>
 				<a href="<?php $messages->permalink();?>" target="_blank"><?php _e('查看')?></a>
                 </div>
 				<div class="cell">

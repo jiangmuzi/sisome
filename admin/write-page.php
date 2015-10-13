@@ -3,6 +3,7 @@ include 'common.php';
 include 'header.php';
 include 'menu.php';
 Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
+
 ?>
 <div class="main">
     <div class="body container">
@@ -134,6 +135,7 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
 </div>
 
 <?php
+
 include 'copyright.php';
 include 'common-js.php';
 include 'form-js.php';
