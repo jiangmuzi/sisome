@@ -70,7 +70,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                                 <td><input type="checkbox" value="<?php $posts->cid(); ?>" name="cid[]"/></td>
                                 <td><a href="<?php $options->adminUrl('manage-comments.php?cid=' . $posts->cid); ?>" class="balloon-button size-<?php echo Typecho_Common::splitByCount($posts->commentsNum, 1, 10, 20, 50, 100); ?>"><?php $posts->commentsNum(); ?></a></td>
                                 <td>
-                                <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>"><?php $posts->title(); ?></a>
+                                <a href="<?php $options->index('publish?cid=' . $posts->cid); ?>" target="_blank"><?php $posts->title(); ?></a>
                                 <?php 
                                 if ($posts->hasSaved || 'post_draft' == $posts->type) {
                                     echo '<em class="status">' . _t('草稿') . '</em>';

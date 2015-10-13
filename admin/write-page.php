@@ -29,6 +29,7 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
                         $permalink = str_replace('{cid}', $page->cid, $permalink);
                     }
                     $input = '<input type="text" id="slug" name="slug" autocomplete="off" value="' . htmlspecialchars($page->slug) . '" class="mono" />';
+					
                     ?>
                     <p class="mono url-slug">
                         <label for="slug" class="sr-only"><?php _e('网址缩略名'); ?></label>
@@ -126,7 +127,7 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
                     </div><!-- end #tab-advance -->
 
                     <div id="tab-files" class="tab-content hidden">
-                        <?php include 'file-upload.php'; ?>
+                        <?php include 'file-upload.php';?>
                     </div><!-- end #tab-files -->
                 </div>
             </form>
