@@ -25,11 +25,13 @@
     	   <?php endif;?>
     	</ul>
     </div>
+	<?php if($this->text):?>
     <article class="cell post">
         <div class="post-content">
             <?php $this->content(); ?>
         </div>
     </article>
+	<?php endif;?>
     <ul class="inner">
         <?php foreach ($this->tags as $tag):?>
             <a class="tag" href="<?php echo $tag['permalink'];?>"><i class="fa fa-tag"></i> <?php echo $tag['name']?></a>
