@@ -259,6 +259,8 @@ abstract class Typecho_Widget
      */
     public function parse($format)
     {
+        if(!$this->have())
+                return;
         while ($this->next()) {
             echo preg_replace_callback("/\{([_a-z0-9]+)\}/i", 
                 array($this, '__parseCallback'), $format);

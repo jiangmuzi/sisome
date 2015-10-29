@@ -60,12 +60,14 @@ $(document).ready(function() {
 
         tags.tokenInput(<?php 
         $data = array();
-        while ($tags->next()) {
-            $data[] = array(
-                'id'    =>  $tags->name,
-                'tags'  =>  $tags->name
-            );
-        }
+		if($tags->have()){
+			while ($tags->next()) {
+				$data[] = array(
+					'id'    =>  $tags->name,
+					'tags'  =>  $tags->name
+				);
+			}
+		}
         echo Json::encode($data);
         ?>, {
             propertyToSearch:   'tags',

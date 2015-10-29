@@ -39,7 +39,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
     protected function ___author()
     {
         // modified_by_jiangmuzi 2015.09.22
-        return $this->widget('Forum_Query_User@uid_' . $this->authorId, array('uid' => $this->authorId));
+        return $this->widget('Widget_Users_Query@uid_' . $this->authorId, array('uid' => $this->authorId));
         // end modified
     }
 
@@ -732,6 +732,10 @@ class Widget_Abstract_Contents extends Widget_Abstract
             }
         }
 
+        if(isset($value['lastUid']) && $value['lastUid']!=0){
+            $value['lastAuthor'] = $this->widget('Widget_Users_Query@uid_'.$value['lastUid'],array('uid'=>$value['lastUid']));
+        }
+        
         $value = $this->pluginHandle(__CLASS__)->filter($value, $this);
 
         /** 如果访问权限被禁止 */

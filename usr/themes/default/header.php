@@ -6,14 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title><?php $this->archiveTitle(array(
-            'category'  =>  _t('%s'),
-            'search'    =>  _t('%s'),
-            'tag'       =>  _t('%s'),
-            'author'    =>  _t('%s')
-        ), '', ' - '); ?>
-    
-    <?php $this->metaTitle(' - ');$this->options->title();$this->options->title(); ?></title>
+    <title><?php $this->getMetaTitle(' - ');$this->options->title(); ?></title>
 
     <!-- 使用url函数转换相关路径 -->
     <link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
@@ -26,7 +19,7 @@
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>
     <script>
-    window.notice = <?php Forum_Common::getNotice();?>;
+    window.notice = <?php Widget_Common::getNotice();?>;
 	window.siteUrl = '<?php $this->options->siteUrl();?>';
     </script>
 </head>

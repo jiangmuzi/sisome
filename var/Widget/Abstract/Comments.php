@@ -332,7 +332,7 @@ class Widget_Abstract_Comments extends Widget_Abstract
         $value['date'] = new Typecho_Date($value['created']);
 		// modified_by_jiangmuzi 2015.09.22
 		if($value['authorId']){
-			$value['poster'] = Typecho_Widget::widget('Forum_Query_User@uid_' . $value['authorId'], array('uid' => $value['authorId']));
+			$value['poster'] = Typecho_Widget::widget('Widget_Users_Query@uid_' . $value['authorId'], array('uid' => $value['authorId']));
 		}
 		// end modified
         $value = $this->pluginHandle(__CLASS__)->filter($value, $this);

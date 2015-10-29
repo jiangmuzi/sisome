@@ -92,42 +92,13 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
 
         $comment['text'] = $this->request->text;
 
-        /** 对一般匿名访问者,将用户数据保存一个月 */
-        if (!$this->user->hasLogin()) {
-            /** Anti-XSS */
-            $comment['author'] = $this->request->filter('trim')->author;
-            $comment['mail'] = $this->request->filter('trim')->mail;
-            $comment['url'] = $this->request->filter('trim')->url;
+        /** 登录用户信息 */
+        $comment['author'] = $this->user->screenName;
+        $comment['mail'] = $this->user->mail;
+        $comment['url'] = $this->user->url;
 
-            /** 修正用户提交的url */
-            if (!empty($comment['url'])) {
-                $urlParams = parse_url($comment['url']);
-                if (!isset($urlParams['scheme'])) {
-                    $comment['url'] = 'http://' . $comment['url'];
-                }
-            }
-
-            $expire = $this->options->gmtTime + $this->options->timezone + 30*24*3600;
-            Typecho_Cookie::set('__typecho_remember_author', $comment['author'], $expire);
-            Typecho_Cookie::set('__typecho_remember_mail', $comment['mail'], $expire);
-            Typecho_Cookie::set('__typecho_remember_url', $comment['url'], $expire);
-        } else {
-            $comment['author'] = $this->user->screenName;
-            $comment['mail'] = $this->user->mail;
-            $comment['url'] = $this->user->url;
-
-            /** 记录登录用户的id */
-            $comment['authorId'] = $this->user->uid;
-        }
-        
-        /** 评论者之前须有评论通过了审核 */
-        if (!$this->options->commentsRequireModeration && $this->options->commentsWhitelist) {
-            if ($commentApprovedNum = $this->size($this->select()->where('author = ? AND mail = ? AND status = ?', $comment['author'], $comment['mail'], 'approved'))) {
-                $comment['status'] = 'approved';
-            } else {
-                $comment['status'] = 'waiting';
-            }
-        }
+        /** 记录登录用户的id */
+        $comment['authorId'] = $this->user->uid;
 
         if ($error = $validator->run($comment)) {
             /** 记录文字 */
@@ -152,7 +123,7 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
             $matches[1] = array_unique($matches[1]);
             foreach($matches[1] as $name){
                 if(empty($name)) continue;
-                $atUser = $this->widget('Forum_Query_User@name_'.$name,array('name'=>$name));
+                $atUser = $this->widget('Widget_Users_Query@name_'.$name,array('name'=>$name));
                 if(!$atUser->have()) continue;
                 $search[] = '@'.$name;
                 $replace[] = '<a href="'.$atUser->ucenter.'" target="_blank">@'.$name.'</a>';
@@ -176,6 +147,7 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
         $this->db->fetchRow($this->select()->where('coid = ?', $commentId)
         ->limit(1), array($this, 'push'));
         
+        $this->db->query($this->db->update('table.contents')->rows(array('lastUid'=>$this->authorId,'lastComment'=>$this->created))->where('cid = ?',$this->cid));
         //提醒主题作者
         if($comment['authorId'] != $comment['ownerId']){
             $atMsg[] = array(
@@ -185,12 +157,15 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
         }
         if(!empty($atMsg)){
             foreach($atMsg as $v){
-                $this->widget('Forum_Messages')->addMessage($v['uid'],$commentId,$v['type']);
+                $this->widget('Widget_Users_Messages')->addMessage($v['uid'],$commentId,$v['type']);
             }
         }
+        
+        Widget_Common::credits('reply');
+        
         /** 评论完成接口 */
         $this->pluginHandle()->finishComment($this);
-
+        
         $this->response->goBack('#' . $this->theId);
     }
 
@@ -234,9 +209,9 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
         ->addRule('url', 'url', 'Your url is not valid.')
         ->addRule('url', 'maxLength', 'Your url is not valid.', 200)
         ->addRule('text', 'required', 'We require all Trackbacks to provide an excerption.')
-        ->addRule('author', 'required', 'We require all Trackbacks to provide an blog name.')
-        ->addRule('author', 'xssCheck', 'Your blog name is not valid.')
-        ->addRule('author', 'maxLength', 'Your blog name is not valid.', 200);
+        ->addRule('author', 'xssCheck', 'Your blog name is not valid.');
+        //->addRule('author', 'required', 'We require all Trackbacks to provide an blog name.')
+        //->addRule('author', 'maxLength', 'Your blog name is not valid.', 200);
 
         $validator->setBreak();
         if ($error = $validator->run($trackback)) {

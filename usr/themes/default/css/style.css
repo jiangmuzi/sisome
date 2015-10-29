@@ -531,6 +531,10 @@ h2.post-title{
 	margin:0;
 	font-weight:400;
 }
+h2.post-title a{
+	display:block;
+	padding-right:40px;
+}
 .post-title a{
 	font-size: 16px;
 	line-height: 130%;

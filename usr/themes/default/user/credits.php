@@ -2,11 +2,11 @@
 <?php $this->need('header.php'); ?>
 <div id="sidebar">
     <?php $this->need('user/widget_user.php'); ?>
-    <div class="box" style="display:none;">
+    <div class="box">
     <div class="head clearfix"><?php $this->options->title();_e('邀请注册');?></div>
     <div class="cell">
         <p>你可以在自己的个人网站上分享 <?php $this->options->title();?> 的链接，如果有新用户通过你的分享注册，那么你和新用户将各自得到：</p>
-        <p><span class="credits-area">200<img src="<?php $this->options->themeUrl('img/credits.png');?>" alt="Credits" align="absmiddle" border="0"></span></p>
+        <p><span class="credits-area"><?php $this->options->creditsInvite();?><img src="<?php $this->options->themeUrl('img/credits.png');?>" alt="Credits" align="absmiddle" border="0"></span></p>
         <input type="text" onclick="this.select();" value="<?php $this->options->index('?i='.$this->user->name);?>">
     </div>
 </div>
@@ -15,7 +15,7 @@
     <div class="box">
         <div class="head">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
 		<div class="cell">
 		<p><?php _e('当前账户余额');?></p>
@@ -36,14 +36,15 @@
 		      </tr>
 		  </thead>
 		  <tbody>
-		      <?php if($this->have()):?>
-		      <?php while ($this->next()):?>
+		       <?php Typecho_Widget::widget('Widget_Credits_List')->to($credits); ?>
+		      <?php if($credits->have()):?>
+		      <?php while ($credits->next()):?>
 		      <tr>
-                <td><small class="gray"><?php echo date('Y-m-d H:i:s',$this->created);?></small></td>
-                <td><?php $this->typeWord();?></td>
-                <td><span class="positive"><strong><?php $this->amount();?></strong></span></td>
-                <td><?php $this->balance();?></td>
-                <td class="d" style="border-right: none;"><span class="gray"><?php $this->remarkWord();?> <strong class="positive"><?php echo abs($this->amount);?></span></strong></td>
+                <td><small class="gray"><?php $credits->date('Y-m-d H:i:s');?></small></td>
+                <td><?php $credits->name();?></td>
+                <td><span class="positive"><strong><?php $credits->amount();?></strong></span></td>
+                <td><?php $credits->balance();?></td>
+                <td class="d" style="border-right: none;"><span class="gray"><?php $credits->remark();?> <strong class="positive"><?php echo abs($credits->amount);?></span></strong></td>
             </tr>
             <?php endwhile;?>
             <?php endif;?>
@@ -51,9 +52,9 @@
 		</table>
 		</div>
 		<div class="inner pager">
-		  <?php $this->pageLink('上一页','prev');?>
-		  <?php echo $this->getCurrentPage();?>/<?php echo $this->getTotalPage();?>
-		  <?php $this->pageLink('下一页','next');?>
+		  <?php $credits->pageLink('上一页','prev');?>
+		  <?php echo $credits->getCurrentPage();?>/<?php echo $credits->getTotalPage();?>
+		  <?php $credits->pageLink('下一页','next');?>
 		</div>
 	</div>
 </div><!-- end #main -->

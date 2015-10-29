@@ -23,7 +23,7 @@
             <?php $this->content(); ?>
         </div>
     </article>
-    <div class="inner"><?php _e('最后更新：');echo Forum_Common::formatTime($this->modified,'Y-m-d H:i:s')?></div>
+    <div class="inner"><?php _e('最后更新：');echo Widget_Common::formatTime($this->modified,'Y-m-d H:i:s')?></div>
     </div>
 </div><!-- end #main-->
 <?php $this->need('footer.php'); ?>

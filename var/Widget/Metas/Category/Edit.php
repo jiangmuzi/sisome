@@ -141,10 +141,12 @@ class Widget_Metas_Category_Edit extends Widget_Abstract_Metas implements Widget
         $parents = $this->widget('Widget_Metas_Category_List@options', 
             (isset($this->request->mid) ? 'ignore=' . $this->request->mid : ''));
 
-        while ($parents->next()) {
-            $options[$parents->mid] = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $parents->levels) . $parents->name;
-        }
-
+		if($parents->have()){
+			while ($parents->next()) {
+				$options[$parents->mid] = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $parents->levels) . $parents->name;
+			}
+		}
+        
         $parent = new Typecho_Widget_Helper_Form_Element_Select('parent', $options, $this->request->parent, _t('父级分类'),
         _t('此分类将归档在您选择的父级分类下.'));
         $form->addInput($parent);

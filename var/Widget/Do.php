@@ -23,9 +23,11 @@ class Widget_Do extends Typecho_Widget
      */
     private $_map = array(
         'ajax'                      =>  'Widget_Ajax',
-        'login'                     =>  'Widget_Login',
-        'logout'                    =>  'Widget_Logout',
-        'register'                  =>  'Widget_Register',
+        'login'                     =>  'Widget_Users_Login',
+        'logout'                    =>  'Widget_Users_Logout',
+        'register'                  =>  'Widget_Users_Register',
+        'forgot'                    =>  'Widget_Users_Forgot',
+        'setting'                   =>  'Widget_Users_Setting',
         'upgrade'                   =>  'Widget_Upgrade',
         'upload'                    =>  'Widget_Upload',
         'service'                   =>  'Widget_Service',
@@ -40,13 +42,14 @@ class Widget_Do extends Typecho_Widget
         'options-general'           =>  'Widget_Options_General',
         'options-permalink'         =>  'Widget_Options_Permalink',
         'options-reading'           =>  'Widget_Options_Reading',
-        'options-forum'             =>  'Forum_Options',
+        'options-forum'             =>  'Widget_Options_Forum',
         'plugins-edit'              =>  'Widget_Plugins_Edit',
         'themes-edit'               =>  'Widget_Themes_Edit',
         'users-edit'                =>  'Widget_Users_Edit',
         'users-profile'             =>  'Widget_Users_Profile',
         // modified_by_jiangmuzi 2015.09.23
-        'forum'                     =>  'Forum_Action',
+        'publish'                   =>  'Widget_Contents_Publish',
+        'forum'                     =>  'Widget_Action',
         //end modified
     );
 

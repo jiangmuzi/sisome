@@ -2,7 +2,7 @@
 <?php if($this->user->hasLogin()):?>
 <div class="user-widget box">
     <div class="head clearfix">
-        <a class="fl" href="<?php $this->options->index('u/'.$this->user->name);?>"><img class="avatar" width="48" src="<?php echo Forum_Common::avatar($this->user->uid,48); ?>"></a>
+        <a class="fl" href="<?php $this->options->index('u/'.$this->user->name);?>"><img class="avatar" width="48" src="<?php echo Widget_Common::avatar($this->user->uid,48); ?>"></a>
         <a class="user-nickname" href="<?php $this->options->index('u/'.$this->user->name);?>"><?php $this->user->name();?></a>
     </div>
     <?php $stat = $this->widget('Widget_Stat');?>
@@ -15,11 +15,11 @@
             <span><?php $stat->favoritePostsNum();?></span>
             <?php _e('主题收藏');?>
         </a>
-        <a href="<?php $this->options->someUrl('user_posts',array('u'=>$this->user->name));?>" title="<?php _e('发布的主题');?>">
+        <a href="<?php $this->options->someUrl('ucenter_post',array('u'=>$this->user->name));?>" title="<?php _e('发布的主题');?>">
             <span><?php $stat->myPublishedPostsNum();?></span>
             <?php _e('主题');?>
         </a>
-        <a class="right" href="<?php $this->options->someUrl('user_replys',array('u'=>$this->user->name));?>" title="<?php _e('发表的回复');?>">
+        <a class="right" href="<?php $this->options->someUrl('ucenter_reply',array('u'=>$this->user->name));?>" title="<?php _e('发表的回复');?>">
             <span><?php $stat->myPublishedCommentsNum();?></span>
             <?php _e('回复');?>
         </a>

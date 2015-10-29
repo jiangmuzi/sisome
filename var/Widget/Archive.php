@@ -114,6 +114,14 @@ class Widget_Archive extends Widget_Abstract_Contents
     private $_feedAtomUrl;
 
     /**
+     * 本页标题
+     *
+     * @access private
+     * @var string
+     */
+    private $_metaTitle;
+    
+    /**
      * 本页关键字
      *
      * @access private
@@ -212,7 +220,13 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @var Typecho_Widget_Helper_PageNavigator
      */
     private $_pageNav;
-
+    /**
+     * 当前访问的用户
+     *
+     * @access private
+     * @var Widget_Users_Query
+     */
+    private $_ucenter;
     /**
      * 构造函数,初始化组件
      *
@@ -296,6 +310,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             /** 默认输出10则文章 **/
             $this->parameter->pageSize = 10;
         }
+
     }
     
     /**
@@ -388,7 +403,15 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         $this->_feedType = $feedType;
     }
-
+    
+    /**
+     * @param $_description the $_metaTitle to set
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->_metaTitle = $metaTitle;
+    }
+    
     /**
      * @param $_description the $_description to set
      */
@@ -525,7 +548,15 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         return $this->_feedType;
     }
-
+    /**
+     * @return the $_description
+     */
+    public function getMetaTitle($slug='')
+    {
+        if(!empty($this->_archiveTitle) && empty($this->_metaTitle))
+            $this->_metaTitle = $this->_archiveTitle;
+        echo empty($this->_metaTitle) ? '' : $this->_metaTitle . $slug;
+    }
     /**
      * @return the $_description
      */
@@ -628,6 +659,9 @@ class Widget_Archive extends Widget_Abstract_Contents
         return $this->_themeDir;
     }
 
+    public function ucenter(){
+        return $this->_ucenter;
+    }
     /**
      * 检查链接是否正确
      * 
@@ -648,7 +682,8 @@ class Widget_Archive extends Widget_Abstract_Contents
             $permalink = $this->permalink;
         } else {
             $value = array_merge($this->_pageRow, array(
-                'page'  =>  $this->_currentPage
+                'page'  =>  $this->_currentPage,
+                'u'=>$this->request->u
             ));
 
             $path = Typecho_Router::url($type, $value);
@@ -781,7 +816,6 @@ class Widget_Archive extends Widget_Abstract_Contents
                 return;
             }
         }
-
         /** 将这两个设置提前是为了保证在调用query的plugin时可以在插件中使用is判断初步归档类型 */
         /** 如果需要更细判断，则可以使用singleHandle来实现 */
         $this->_archiveSingle = true;
@@ -905,7 +939,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         }
         // 判断是否收藏
         if('post' == $this->type && $this->user->hasLogin()){
-            $this->parameter->isFavorite = $this->widget('Forum_Favorites')->isFavorite('post',$this->cid);
+            $this->parameter->isFavorite = $this->widget('Widget_Users_Favorites')->isFavorite('post',$this->cid);
         }
         /** 插件接口 */
         $this->pluginHandle()->singleHandle($this, $select);
@@ -1263,6 +1297,179 @@ class Widget_Archive extends Widget_Abstract_Contents
     }
 
     /**
+     * 登录
+     */
+    private function loginHandle(Typecho_Db_Query $select, &$hasPushed){
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('登录');
+        $this->setThemeFile('user/login.php');
+    }
+    /**
+     * 注册
+     */
+    private function registerHandle(Typecho_Db_Query $select, &$hasPushed){
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+		
+        $this->setMetaTitle('注册');
+        $this->setThemeFile('user/register.php');
+    }
+    
+    private function activateHandle(Typecho_Db_Query $select, &$hasPushed){
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('激活帐号');
+        
+        $token = $this->request->token;
+        if(empty($token)){
+            throw new Typecho_Widget_Exception(_t('请求的地址不存在'), 404);
+        }
+        $verify = $this->widget('Util_Verify')->setParams('type=register')->check($token);
+        if(!empty($verify) && $verify['status']!=1){
+            $row['group'] = 'contributor';
+            $this->db->query($this->db
+                ->update('table.users')
+                ->rows($row)
+                ->where('uid = ?', $verify['uid']));
+            $this->widget('Util_Verify')->setParams('type=register')->delete($token);
+			
+			Widget_Common::credits('invite',$verify['uid']);
+        }
+        
+        $this->setThemeFile('user/activate.php');
+    }
+    
+    private function messageHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('消息提醒');
+        $this->setThemeFile('user/messages.php');
+    }
+    /**
+     * 设置
+     */
+    private function settingHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('设置');
+        $this->setThemeFile('user/setting.php');
+    }
+    /**
+     * 设置头像
+     */
+    private function settingAvatarHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('上传头像');
+        $this->setThemeFile('user/setting_avatar.php');
+    }
+    /**
+     * 忘记密码
+     */
+    private function forgotHandle(Typecho_Db_Query $select, &$hasPushed){
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        
+        $token = $this->request->token;
+        if(empty($token)){
+            $this->setMetaTitle('忘记密码');
+            $this->setThemeFile('user/forgot.php');
+        }else{
+            $verify = $this->widget('Util_Verify')->setParams('type=reset')->check($token);
+            
+            if(empty($verify)){
+                throw new Typecho_Widget_Exception(_t('请求的地址不存在'), 404);
+            }
+            
+            $this->setMetaTitle('通过邮箱重设密码');
+            $this->setThemeFile('user/forgot_reset.php');
+        }
+    }
+    
+    
+    private function creditsHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('账户积分');
+        $this->setThemeFile('user/credits.php');
+    }
+    
+    /**
+     * 用户收藏
+     */
+    private function favoriteHandle(Typecho_Db_Query $select, &$hasPushed){
+        if(!$this->user->hasLogin()){
+            $this->response->redirect($this->options->someUrl('login',null,false));
+        }
+        $hasPushed = true;
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle('我收藏的'.($this->parameter->type == 'favorite_nodes' ? '节点' : '主题'));
+        $this->setThemeFile('user/'.$this->parameter->type.'.php');
+    }
+    
+    /**
+     * 用户中心
+     */
+    private function ucenterHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->initUcenter();
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle($this->_ucenter->name);
+        $this->setThemeFile('user/ucenter.php');
+    }
+    
+    /**
+     * 用户发布的主题
+     */
+    private function ucenterPostHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->initUcenter();
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle($this->_ucenter->name.'的主题');
+        $this->setThemeFile('user/posts.php');
+    }
+    /**
+     * 用户发表的回复
+     */
+    private function ucenterReplyHandle(Typecho_Db_Query $select, &$hasPushed){
+        $this->notLoginRedirect();
+        $hasPushed = true;
+        $this->initUcenter();
+        $this->setArchiveType($this->parameter->type);
+        $this->setMetaTitle($this->_ucenter->name.'的回复');
+        $this->setThemeFile('user/replys.php');
+    }
+    
+    
+    private function initUcenter(){
+        $name = $this->request->get('u');
+        if(empty($this->_ucenter) && !empty($name)){
+            
+            $this->_ucenter = $this->widget('Widget_Users_Query@name_'.$name,array('name'=>$name));
+        }
+        if(empty($this->_ucenter)){
+            if($this->_invokeFromOutside){
+                $this->widget('Widget_Archive@404', 'type=404')->render();
+                exit;
+            }
+            if($this->user->hasLogin()){
+                $this->_ucenter = clone $this->user;
+            }
+        }
+    }
+    private function notLoginRedirect(){
+        if(!$this->user->hasLogin()){
+            $this->response->redirect($this->options->someUrl('login',null,false).'?redir='.$this->request->getRequestUrl());
+        }
+    }
+    /**
      * 重载select
      *
      * @access public
@@ -1331,9 +1538,32 @@ class Widget_Archive extends Widget_Abstract_Contents
             'archive_day'               =>  'dateHandle',
             'archive_day_page'          =>  'dateHandle',
             'search'                    =>  'searchHandle',
-            'search_page'               =>  'searchHandle'
+            'search_page'               =>  'searchHandle',
+            
+            'login'                 =>  'loginHandle',
+            'register'              =>  'registerHandle',
+            'activate'              =>  'activateHandle',
+            'setting'               =>  'settingHandle',
+            'setting_avatar'        =>  'settingAvatarHandle',
+            'message'               =>  'messageHandle',
+            'credits'               =>  'creditsHandle',
+            'forgot'                =>  'forgotHandle',
+            'favorite_nodes'        =>  'favoriteHandle',
+            'favorite_posts'        =>  'favoriteHandle',
+            
+            
+            'ucenter'               =>  'ucenterHandle',
+            'ucenter_post'          =>  'ucenterPostHandle',
+            'ucenter_post_page'     =>  'ucenterPostHandle',
+            'ucenter_reply'         =>  'ucenterReplyHandle',
+            'ucenter_reply_page'    =>  'ucenterReplyHandle',
+            
         );
 
+        if(isset($this->request->i) && !empty($this->request->i)){
+            Typecho_Cookie::set('__typecho_inviter', $this->request->i);
+        }
+        
         /** 处理搜索结果跳转 */
         if (isset($this->request->s)) {
             $filterKeywords = $this->request->filter('search')->s;
@@ -1421,12 +1651,10 @@ class Widget_Archive extends Widget_Abstract_Contents
                 themeInit($this);
             }
         }
-
         /** 如果已经提前压入则直接返回 */
         if ($hasPushed) {
             return;
         }
-
         /** 仅输出文章 */
         $this->_countSql = clone $select;
         // modified_by_jiangmuzi 2015.09.24
@@ -1905,9 +2133,10 @@ class Widget_Archive extends Widget_Abstract_Contents
      */
     public function render()
     {
+        
         /** 处理静态链接跳转 */
         $this->checkPermalink();
-        
+
         /** 添加Pingback */
         $this->response->setHeader('X-Pingback', $this->options->xmlRpcUrl);
         $validated = false;

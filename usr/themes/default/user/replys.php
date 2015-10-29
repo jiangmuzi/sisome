@@ -6,11 +6,11 @@
 <div class="user-profile" id="main" role="main">
     <?php $this->need('user/widget_info.php'); ?>
     <div class="box">
-        <?php Typecho_Widget::widget('Forum_User_Comments')->to($comments); ?>
+        <?php $this->widget('Widget_Comments_List@UserRecentReply','uid='.$this->ucenter()->uid)->to($comments); ?>
         <?php if($comments->have()): ?>
         <?php while($comments->next()): ?>
             <div class="cell" style="background-color: #EDF3F5;"><?php _e('回复了');?> <a href="<?php $comments->permalink(); ?>"><?php $comments->title(); ?></a>
-                <span class="fr"><?php echo Forum_Common::formatTime($comments->created); ?></span>
+                <span class="fr"><?php $comments->dateWord(); ?></span>
             </div>
             <div class="cell"><?php $comments->content(); ?></div>
         <?php endwhile; ?>

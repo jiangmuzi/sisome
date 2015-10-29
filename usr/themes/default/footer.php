@@ -4,16 +4,17 @@
 <footer id="footer" role="contentinfo">
     <div class="wp">
         <div class="foot-nav">
-            <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-            <?php while($pages->next()): ?>
-            <a href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a>
-            <?php endwhile; ?>
+            <?php $this->widget('Widget_Contents_Page_List')
+            ->parse('<a href="{permalink}" title="{title}">{title}</a>'); ?>
         </div>
         <p> &copy; <?php echo date('Y');?> <a href="<?php $this->options->siteUrl(); ?>" target="_blank"> <?php $this->options->title() ?> </a>
             <?php _e(' / Powered by <a href="http://www.typecho.org" target="_blank">Typecho</a>'); ?>
-            <?php if ($this->options->icpNum): ?>
-               / <a href="http://www.miitbeian.gov.cn/" target="blank"><?php $this->options->icpNum(); ?></a>
+            <?php if ($this->options->siteIcp): ?>
+               / <a href="http://www.miitbeian.gov.cn/" target="blank"><?php $this->options->siteIcp(); ?></a>
             <?php endif; ?>
+			<?php if ($this->options->siteStat): ?>
+				<span style="display:none;"><?php $this->options->siteStat(); ?></span>
+			<?php endif; ?>
     	</p> 
     </div>
 </footer><!-- end #footer -->

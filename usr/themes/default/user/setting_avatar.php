@@ -8,7 +8,7 @@
     <div class="head">
         <div class="location">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->metaTitle();?>
+            <?php $this->getMetaTitle();?>
         </div>
     </div>
     <div class="cell">
@@ -16,9 +16,9 @@
         <div class="field">
 	          <label>当前头像</label>
 	          <p class="m0">
-					<img class="avatar vab mr10" width="96" src="<?php echo Forum_Common::avatar($this->user->uid,96);?>" align="default">
-					<img class="avatar vab mr10" width="48" src="<?php echo Forum_Common::avatar($this->user->uid,48);?>" align="default">
-					<img class="avatar vab mr10" width="32" src="<?php echo Forum_Common::avatar($this->user->uid,32);?>" align="default">
+					<img class="avatar vab mr10" width="96" src="<?php echo Widget_Common::avatar($this->user->uid,96);?>" align="default">
+					<img class="avatar vab mr10" width="48" src="<?php echo Widget_Common::avatar($this->user->uid,48);?>" align="default">
+					<img class="avatar vab mr10" width="24" src="<?php echo Widget_Common::avatar($this->user->uid,24);?>" align="default">
                 </p>
 	      </div>
 	      <div class="field">
