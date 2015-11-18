@@ -32,18 +32,19 @@ list($prefixVersion, $suffixVersion) = explode('/', $options->version);
 $params = parse_url($currentMenu[2]);
 $adminFile = basename($params['path']);
 
-if (!$user->logged && !Typecho_Cookie::get('__typecho_first_run') && !empty($currentMenu)) {
+if (!$user->logged && !Typecho_Cookie::get('__some_first_run') && !empty($currentMenu)) {
     
     if ('welcome.php' != $adminFile) {
         $response->redirect(Typecho_Common::url('welcome.php', $options->adminUrl));
     } else {
-        Typecho_Cookie::set('__typecho_first_run', 1);
+        Typecho_Cookie::set('__some_first_run', 1);
     }
     
 } else {
 
     /** 检测版本是否升级 */
     if ($user->pass('administrator', true) && !empty($currentMenu)) {
+		
         $mustUpgrade = (!defined('Typecho_Common::VERSION') || version_compare(str_replace('/', '.', Typecho_Common::VERSION),
         str_replace('/', '.', $options->version), '>'));
 

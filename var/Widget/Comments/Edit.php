@@ -201,7 +201,7 @@ class Widget_Comments_Edit extends Widget_Abstract_Comments implements Widget_In
     public function deleteSpamComment()
     {
         $deleteQuery = $this->db->delete('table.comments')->where('status = ?', 'spam');
-        if (!$this->request->__typecho_all_comments || !$this->user->pass('editor', true)) {
+        if (!$this->request->__some_all_comments || !$this->user->pass('editor', true)) {
             $deleteQuery->where('ownerId = ?', $this->user->uid);
         }
 

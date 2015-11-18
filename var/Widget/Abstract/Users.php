@@ -152,13 +152,9 @@ class Widget_Abstract_Users extends Widget_Abstract
         $value['feedAtomUrl'] = $routeExists ? Typecho_Router::url('author', $value, $this->options->feedAtomUrl) : '#';
 
 		// modified_by_jiangmuzi 2015.09.22
-		
 		if(!empty($value['extend'])){
 			$value['extend'] = unserialize($value['extend']);
 		}
-		
-		$avatar = Widget_Common::parseUserAvatar($value['uid']);
-		$value = array_merge($value,$avatar);
 		$value['ucenter'] = $this->options->someUrl('ucenter',array('u'=>$value['name']),false);
 		// end modified
         $value = $this->pluginHandle(__CLASS__)->filter($value, $this);
@@ -237,9 +233,9 @@ class Widget_Abstract_Users extends Widget_Abstract
     {
         return $this->db->query($condition->delete('table.users'));
     }
-
-    /**
-     * 调用gravatar输出用户头像
+	
+	/**
+     * 输出用户头像
      *
      * @access public
      * @param integer $size 头像尺寸
@@ -248,10 +244,8 @@ class Widget_Abstract_Users extends Widget_Abstract
      * @param string $class 默认css class
      * @return void
      */
-    public function gravatar($size = 40, $rating = 'X', $default = NULL, $class = NULL)
+	public function avatar($size = 48, $class = null)
     {
-        $url = Typecho_Common::gravatarUrl($this->mail, $size, $rating, $default, $this->request->isSecure());
-        echo '<img' . (empty($class) ? '' : ' class="' . $class . '"') . ' src="' . $url . '" alt="' .
-        $this->screenName . '" width="' . $size . '" height="' . $size . '" />';
+        echo Widget_Common::avatar($this->uid,$size,$this->screenName,$class,false);
     }
 }

@@ -22,7 +22,7 @@ define('__TYPECHO_MB_SUPPORTED__', function_exists('mb_get_info'));
 class Typecho_Common
 {
     /** 程序版本 */
-    const VERSION = '1.0/14.10.10';
+    const VERSION = '0.1/15.11.11';
 
     /**
      * 允许的属性
@@ -419,6 +419,33 @@ EOF;
             || (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) // GAE
             ;
     }
+
+	public static function cache($name,$value='',$options=null) {
+		static $cache   =   '';
+		if(is_array($options)){
+			// 缓存操作的同时初始化
+			$type       =   isset($options['type'])?$options['type']:'';
+			$cache      =   Typecho_Cache::getInstance($type,$options);
+		}elseif(is_array($name)) { // 缓存初始化
+			$type       =   isset($name['type'])?$name['type']:'';
+			$cache      =   Typecho_Cache::getInstance($type,$name);
+			return $cache;
+		}elseif(empty($cache)) { // 自动初始化
+			$cache      =   Typecho_Cache::getInstance();
+		}
+		if(''=== $value){ // 获取缓存
+			return $cache->get($name);
+		}elseif(is_null($value)) { // 删除缓存
+			return $cache->rm($name);
+		}else { // 缓存数据
+			if(is_array($options)) {
+				$expire     =   isset($options['expire'])?$options['expire']:NULL;
+			}else{
+				$expire     =   is_numeric($options)?$options:NULL;
+			}
+			return $cache->set($name, $value, $expire);
+		}
+	}
 
     /**
      * 递归去掉数组反斜线

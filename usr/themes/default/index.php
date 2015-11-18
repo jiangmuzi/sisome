@@ -56,7 +56,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     <?php if($this->have()):?>
     	<?php while($this->next()): ?>
             <article class="cell post">
-    			<a class="post-avatar" href="<?php $this->author->ucenter(); ?>"><img class="avatar" src="<?php $this->author->avatar();?>"></a>
+    			<a class="post-avatar" href="<?php $this->author->ucenter(); ?>"><?php $this->author->avatar(48,'avatar');?></a>
     			<h2 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
     			<ul class="post-meta">
 					<?php if($this->category):?>

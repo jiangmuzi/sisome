@@ -262,8 +262,8 @@ class Widget_Users_Oauth extends Widget_Abstract_Users{
         $authCode = function_exists('openssl_random_pseudo_bytes') ?
         bin2hex(openssl_random_pseudo_bytes(16)) : sha1(Typecho_Common::randString(20));
     
-        Typecho_Cookie::set('__typecho_uid', $uid, $expire);
-        Typecho_Cookie::set('__typecho_authCode', Typecho_Common::hash($authCode), $expire);
+        Typecho_Cookie::set('__some_uid', $uid, $expire);
+        Typecho_Cookie::set('__some_authCode', Typecho_Common::hash($authCode), $expire);
     
         //更新最后登录时间以及验证码
         $this->db->query($this->db

@@ -20,17 +20,11 @@ class Widget_Users_Setting extends Widget_Abstract_Users implements Widget_Inter
 
         if($rs){
 			$filepath = __TYPECHO_ROOT_DIR__.$rs['path'];
-			$big = $filepath.$this->user->uid.'_96.jpg';
-			$normal = $filepath.$this->user->uid.'_48.jpg';
-			$small = $filepath.$this->user->uid.'_24.jpg';
+			$avatar = $filepath.$this->user->uid.'.jpg';
 			require_once 'Util/Image.php';
-			
-			$image = new Image();
-			
+			$image = new Image();	
 			$image = $image->open(__TYPECHO_ROOT_DIR__.$rs['file']);
-			$image->thumb(96,96,4)->save($big);
-			$image->thumb(48,48,4)->save($normal);
-			$image->thumb(24,24,4)->save($small);
+			$image->thumb(120,120,4)->save($avatar);
 			@unlink(__TYPECHO_ROOT_DIR__.$rs['file']);
 			
 			$this->widget('Widget_Notice')->set('头像已上传');
@@ -215,9 +209,9 @@ class Widget_Users_Setting extends Widget_Abstract_Users implements Widget_Inter
         }
         
         //获取文件名
-        $fileName = $this->user->uid . '.' . $ext;
+        $fileName = $this->user->uid . '.tmp.' . $ext;
         $realPath = $realPath . '/' . $fileName;
-        
+
         if (isset($file['tmp_name'])) {
         
             //移动上传文件

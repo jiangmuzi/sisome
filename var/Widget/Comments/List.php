@@ -82,10 +82,14 @@ class Widget_Comments_List extends Widget_Abstract_Comments
                 'desc'=>true,		//顺序、逆序
                 'pageSize'=>10,		//获取内容条数
                 'last'=>0,           //最后回复时间
-                'uid'=>0            //获取某用户回复
+                'uid'=>0,            //获取某用户回复
+				'page'=>0
             ));
         
         $this->_currentPage = $this->request->get('page', 1);
+		if($this->parameter->page){
+			$this->_currentPage = $this->parameter->page;
+		}
         $desc = $this->parameter->desc ? Typecho_Db::SORT_DESC : Typecho_Db::SORT_ASC ;
         
         if($this->parameter->last){

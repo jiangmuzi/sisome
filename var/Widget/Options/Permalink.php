@@ -241,9 +241,9 @@ RewriteRule . {$basePath}index.php [L]
 
         /** 增加个性化路径 */
         $customPatternValue = NULL;
-        if (isset($this->request->__typecho_form_item_postPattern)) {
-            $customPatternValue = $this->request->__typecho_form_item_postPattern;
-            Typecho_Cookie::delete('__typecho_form_item_postPattern');
+        if (isset($this->request->__some_form_item_postPattern)) {
+            $customPatternValue = $this->request->__some_form_item_postPattern;
+            Typecho_Cookie::delete('__some_form_item_postPattern');
         } else if (!isset($patterns[$postPatternValue])) {
             $customPatternValue = $this->decodeRule($postPatternValue);
         }
@@ -288,7 +288,7 @@ RewriteRule . {$basePath}index.php [L]
     {
         /** 验证格式 */
         if ($this->form()->validate()) {
-            Typecho_Cookie::set('__typecho_form_item_postPattern', $this->request->customPattern);
+            Typecho_Cookie::set('__some_form_item_postPattern', $this->request->customPattern);
             $this->response->goBack();
         }
 

@@ -1346,6 +1346,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->setArchiveType($this->parameter->type);
         $this->setMetaTitle('消息提醒');
         $this->setThemeFile('user/messages.php');
+		$this->messages = $this->widget('Widget_Messages_List');
     }
     /**
      * 设置
@@ -1397,6 +1398,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->setArchiveType($this->parameter->type);
         $this->setMetaTitle('账户积分');
         $this->setThemeFile('user/credits.php');
+		$this->credits = Typecho_Widget::widget('Widget_Credits_List');
     }
     
     /**
@@ -1409,49 +1411,50 @@ class Widget_Archive extends Widget_Abstract_Contents
         $hasPushed = true;
         $this->setArchiveType($this->parameter->type);
         $this->setMetaTitle('我收藏的'.($this->parameter->type == 'favorite_nodes' ? '节点' : '主题'));
-        $this->setThemeFile('user/'.$this->parameter->type.'.php');
+        $this->setThemeFile('user/favorite.php');
+		$type = $this->parameter->type == 'favorite_nodes' ? 'tag' : 'post';
+		$this->favorites = $this->widget('Widget_Favorites_List','type='.$type);
     }
     
     /**
      * 用户中心
      */
     private function ucenterHandle(Typecho_Db_Query $select, &$hasPushed){
-        $this->notLoginRedirect();
         $hasPushed = true;
         $this->initUcenter();
         $this->setArchiveType($this->parameter->type);
         $this->setMetaTitle($this->_ucenter->name);
         $this->setThemeFile('user/ucenter.php');
+		$this->posts = $this->widget('Widget_Contents_Post_List@UserPostList','page=1&uid='.$this->ucenter()->uid);
+		$this->comments = $this->widget('Widget_Comments_List@UserComment','page=1&uid='.$this->ucenter()->uid);
     }
     
     /**
      * 用户发布的主题
      */
     private function ucenterPostHandle(Typecho_Db_Query $select, &$hasPushed){
-        $this->notLoginRedirect();
         $hasPushed = true;
         $this->initUcenter();
         $this->setArchiveType($this->parameter->type);
         $this->setMetaTitle($this->_ucenter->name.'的主题');
         $this->setThemeFile('user/posts.php');
+		$this->posts = $this->widget('Widget_Contents_Post_List@UserPostList','&uid='.$this->ucenter()->uid);
     }
     /**
      * 用户发表的回复
      */
     private function ucenterReplyHandle(Typecho_Db_Query $select, &$hasPushed){
-        $this->notLoginRedirect();
         $hasPushed = true;
         $this->initUcenter();
         $this->setArchiveType($this->parameter->type);
         $this->setMetaTitle($this->_ucenter->name.'的回复');
         $this->setThemeFile('user/replys.php');
+		$this->comments = $this->widget('Widget_Comments_List@UserComment','uid='.$this->ucenter()->uid);
     }
-    
     
     private function initUcenter(){
         $name = $this->request->get('u');
         if(empty($this->_ucenter) && !empty($name)){
-            
             $this->_ucenter = $this->widget('Widget_Users_Query@name_'.$name,array('name'=>$name));
         }
         if(empty($this->_ucenter)){
@@ -1561,7 +1564,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         );
 
         if(isset($this->request->i) && !empty($this->request->i)){
-            Typecho_Cookie::set('__typecho_inviter', $this->request->i);
+            Typecho_Cookie::set('__some_inviter', $this->request->i);
         }
         
         /** 处理搜索结果跳转 */
@@ -2058,7 +2061,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             return '';
         }
     
-        $value = Typecho_Cookie::get('__typecho_remember_' . $cookieName);
+        $value = Typecho_Cookie::get('__some_remember_' . $cookieName);
         if ($return) {
             return $value;
         } else {

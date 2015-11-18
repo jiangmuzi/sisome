@@ -45,8 +45,9 @@ class Widget_Abstract_Credits extends Widget_Abstract{
     {
         $value['date'] = new Typecho_Date($value['created']);
         $value['name'] = $this->_creditType[$value['type']]['title'];
-        $r = $value['amount']>0 ? '奖励' : '扣掉';
+        $r = $value['amount']>0 ? '奖励' : '扣除';
         $value['remark'] = $this->_creditType[$value['type']]['title'].' '.$r;
+		$value['amount'] = abs($value['amount']);
         return $value;
     }
     /**

@@ -156,7 +156,7 @@ function _u() {
 }
 
 $options = new stdClass();
-$options->generator = 'Typecho ' . Typecho_Common::VERSION;
+$options->generator = 'SomeBBS ' . Typecho_Common::VERSION;
 list($soft, $currentVersion) = explode(' ', $options->generator);
 
 $options->software = $soft;
@@ -165,7 +165,7 @@ $options->version = $currentVersion;
 list($prefixVersion, $suffixVersion) = explode('/', $currentVersion);
 
 /** 获取语言 */
-$lang = _r('lang', Typecho_Cookie::get('__typecho_lang'));
+$lang = _r('lang', Typecho_Cookie::get('__some_lang'));
 $langs = Widget_Options_General::getLangs();
 
 if (empty($lang) && count($langs) > 1) {
@@ -185,20 +185,20 @@ if ('zh_CN' != $lang) {
     Typecho_I18n::setLang($dir . '/' . $lang . '.mo');
 }
 
-Typecho_Cookie::set('__typecho_lang', $lang);
+Typecho_Cookie::set('__some_lang', $lang);
 
 ?><!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head lang="zh-CN">
     <meta charset="<?php _e('UTF-8'); ?>" />
-	<title><?php _e('Typecho 安装程序'); ?></title>
+	<title><?php _e('SomeBBS 安装程序'); ?></title>
     <link rel="stylesheet" type="text/css" href="admin/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="admin/css/grid.css" />
     <link rel="stylesheet" type="text/css" href="admin/css/style.css" />
 </head>
 <body>
 <div class="typecho-install-patch">
-    <h1>Typecho</h1>
+    <h1>SomeBBS</h1>
     <ol class="path">
         <li<?php if (!isset($_GET['finish']) && !isset($_GET['config'])) : ?> class="current"<?php endif; ?>><span>1</span><?php _e('欢迎使用'); ?></li>
         <li<?php if (isset($_GET['config'])) : ?> class="current"<?php endif; ?>><span>2</span><?php _e('初始化配置'); ?></li>
@@ -218,7 +218,7 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                     <p class="message error"><?php _e('您没有上传 config.inc.php 文件，请您重新安装！'); ?> <button class="btn primary" type="submit"><?php _e('重新安装 &raquo;'); ?></button></p>
                     </form>
                 </div>
-                <?php elseif (!Typecho_Cookie::get('__typecho_config')): ?>
+                <?php elseif (!Typecho_Cookie::get('__some_config')): ?>
                 <h1 class="typecho-install-title"><?php _e('没有安装!'); ?></h1>
                 <div class="typecho-install-body">
                     <form method="post" action="?config" name="config">
@@ -227,8 +227,8 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                 </div>
                 <?php else : ?>
                     <?php
-                    $config = unserialize(base64_decode(Typecho_Cookie::get('__typecho_config')));
-                    Typecho_Cookie::delete('__typecho_config');
+                    $config = unserialize(base64_decode(Typecho_Cookie::get('__some_config')));
+                    Typecho_Cookie::delete('__some_config');
                     $db = new Typecho_Db($config['adapter'], $config['prefix']);
                     $db->addServer($config, Typecho_Db::READ | Typecho_Db::WRITE);
                     Typecho_Db::set($db);
@@ -246,17 +246,13 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                     <?php endif;?>
                     </div>
 
-                    <div class="p message notice">
-                    <a target="_blank" href="http://spreadsheets.google.com/viewform?key=pd1Gl4Ur_pbniqgebs5JRIg&hl=en">参与用户调查, 帮助我们完善产品</a>
-                    </div>
-
                     <div class="session">
                     <p><?php _e('您可以将下面两个链接保存到您的收藏夹'); ?>:</p>
                     <ul>
                     <?php
                         if (isset($_REQUEST['user']) && isset($_REQUEST['password'])) {
                             $loginUrl = _u() . '/index.php/action/login?name=' . urlencode(_r('user')) . '&password='
-                            . urlencode(_r('password')) . '&referer=' . _u() . '/admin/index.php';
+                            . urlencode(_r('password')) . '&redir=' . _u() . '/admin/index.php';
                             $loginUrl = Typecho_Widget::widget('Widget_Security')->getTokenUrl($loginUrl);
                         } else {
                             $loginUrl = _u() . '/admin/index.php';
@@ -267,7 +263,7 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                     </ul>
                     </div>
 
-                    <p><?php _e('希望您能尽情享用 Typecho 带来的乐趣!'); ?></p>
+                    <p><?php _e('希望您能尽情享用 SomeBBS 带来的乐趣!'); ?></p>
                 </div>
                 <?php endif;?>
             <?php elseif (isset($_GET['start'])): ?>
@@ -280,7 +276,7 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                 </div>
                 <?php else : ?>
             <?php
-                                    $config = unserialize(base64_decode(Typecho_Cookie::get('__typecho_config')));
+                                    $config = unserialize(base64_decode(Typecho_Cookie::get('__some_config')));
                                     $type = explode('_', $config['adapter']);
                                     $type = array_pop($type);
 
@@ -546,7 +542,7 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                                 }
 
                                 if($success) {
-                                    Typecho_Cookie::set('__typecho_config', base64_encode(serialize(array_merge(array(
+                                    Typecho_Cookie::set('__some_config', base64_encode(serialize(array_merge(array(
                                         'prefix'    =>  _r('dbPrefix'),
                                         'userName'  =>  _r('userName'),
                                         'userPassword'  =>  _r('userPassword'),
@@ -607,7 +603,7 @@ Typecho_Db::set(\$db);
                             <?php require_once './install/' . $type . '.php'; ?>
                             <li>
                             <label class="typecho-label" for="dbPrefix"><?php _e('数据库前缀'); ?></label>
-                            <input type="text" class="text" name="dbPrefix" id="dbPrefix" value="<?php _v('dbPrefix', 'typecho_'); ?>" />
+                            <input type="text" class="text" name="dbPrefix" id="dbPrefix" value="<?php _v('dbPrefix', 'somebbs_'); ?>" />
                             <p class="description"><?php _e('默认前缀是 "typecho_"'); ?></p>
                             </li>
                         </ul>
@@ -638,7 +634,7 @@ Typecho_Db::set(\$db);
                             </li>
                             <li>
                             <label class="typecho-label" for="userMail"><?php _e('邮件地址'); ?></label>
-                            <input type="text" name="userMail" id="userMail" class="text" value="<?php _v('userMail', 'webmaster@yourdomain.com'); ?>" />
+                            <input type="text" name="userMail" id="userMail" class="text" value="<?php _v('userMail', 'master@yourdomain.com'); ?>" />
                             <p class="description"><?php _e('请填写一个您的常用邮箱'); ?></p>
                             </li>
                         </ul>
@@ -648,14 +644,14 @@ Typecho_Db::set(\$db);
                 </form>
             <?php  else: ?>
                 <form method="post" action="?config">
-                <h1 class="typecho-install-title"><?php _e('欢迎使用 Typecho'); ?></h1>
+                <h1 class="typecho-install-title"><?php _e('欢迎使用 SomeBBS'); ?></h1>
                 <div class="typecho-install-body">
                 <h2><?php _e('安装说明'); ?></h2>
                 <p><strong><?php _e('本安装程序将自动检测服务器环境是否符合最低配置需求. 如果不符合, 将在上方出现提示信息, 请按照提示信息检查您的主机配置. 如果服务器环境符合要求, 将在下方出现 "开始下一步" 的按钮, 点击此按钮即可一步完成安装.'); ?></strong></p>
                 <h2><?php _e('许可及协议'); ?></h2>
-                <p><?php _e('Typecho 基于 <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a> 协议发布, 我们允许用户在 GPL 协议许可的范围内使用, 拷贝, 修改和分发此程序.'); ?>
+                <p><?php _e('SomeBBS 基于 <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a> 协议发布, 我们允许用户在 GPL 协议许可的范围内使用, 拷贝, 修改和分发此程序.'); ?>
                 <?php _e('在GPL许可的范围内，您可以自由地将其用于商业以及非商业用途.'); ?></p>
-                <p><?php _e('Typecho 软件由其社区提供支持, 核心开发团队负责维护程序日常开发工作以及新特性的制定.'); ?>
+                <p><?php _e('SomeBBS 软件由其社区提供支持, 核心开发团队负责维护程序日常开发工作以及新特性的制定.'); ?>
                 <?php _e('如果您遇到使用上的问题, 程序中的 BUG, 以及期许的新功能, 欢迎您在社区中交流或者直接向我们贡献代码.'); ?>
                 <?php _e('对于贡献突出者, 他的名字将出现在贡献者名单中.'); ?></p>
                 </div>

@@ -17,7 +17,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                 <ul id="start-link" class="clearfix">
                     <?php if($user->pass('contributor', true)): ?>
                     <li><a href="<?php $options->adminUrl('write-post.php'); ?>"><?php _e('撰写新文章'); ?></a></li>
-                    <?php if($user->pass('editor', true) && 'on' == $request->get('__typecho_all_comments') && $stat->waitingCommentsNum > 0): ?>
+                    <?php if($user->pass('editor', true) && 'on' == $request->get('__some_all_comments') && $stat->waitingCommentsNum > 0): ?>
                         <li><a href="<?php $options->adminUrl('manage-comments.php?status=waiting'); ?>"><?php _e('待审核的评论'); ?></a>
                         <span class="balloon"><?php $stat->waitingCommentsNum(); ?></span>
                         </li>
@@ -26,7 +26,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                         <span class="balloon"><?php $stat->myWaitingCommentsNum(); ?></span>
                         </li>
                     <?php endif; ?>
-                    <?php if($user->pass('editor', true) && 'on' == $request->get('__typecho_all_comments') && $stat->spamCommentsNum > 0): ?>
+                    <?php if($user->pass('editor', true) && 'on' == $request->get('__some_all_comments') && $stat->spamCommentsNum > 0): ?>
                         <li><a href="<?php $options->adminUrl('manage-comments.php?status=spam'); ?>"><?php _e('垃圾评论'); ?></a>
                         <span class="balloon"><?php $stat->spamCommentsNum(); ?></span>
                         </li>
@@ -43,7 +43,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                     <?php endif; ?>
                     <!--<li><a href="<?php $options->adminUrl('profile.php'); ?>"><?php _e('更新我的资料'); ?></a></li>-->
                 </ul>
-                <?php $version = Typecho_Cookie::get('__typecho_check_version'); ?>
+                <?php $version = Typecho_Cookie::get('__some_check_version'); ?>
                 <?php if ($version && $version['available']): ?>
                 <div class="update-check">
                     <p class="message notice">
@@ -56,7 +56,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
 
             <div class="col-mb-12 col-tb-4" role="complementary">
                 <section class="latest-link">
-                    <h3><?php _e('最近发布的文章'); ?></h3>
+                    <h3><?php _e('最近的主题'); ?></h3>
                     <?php Typecho_Widget::widget('Widget_Contents_Post_List', 'pageSize=10')->to($posts); ?>
                     <ul>
                     <?php if($posts->have()): ?>
@@ -75,7 +75,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
 
             <div class="col-mb-12 col-tb-4" role="complementary">
                 <section class="latest-link">
-                    <h3><?php _e('最近得到的回复'); ?></h3>
+                    <h3><?php _e('最近的回复'); ?></h3>
                     <ul>
                         <?php Typecho_Widget::widget('Widget_Comments_List', 'pageSize=10')->to($comments); ?>
                         <?php if($comments->have()): ?>
@@ -113,6 +113,7 @@ include 'common-js.php';
 ?>
 
 <script>
+/*
 $(document).ready(function () {
     var ul = $('#typecho-message ul'), cache = window.sessionStorage,
         html = cache ? cache.getItem('feed') : '',
@@ -153,7 +154,7 @@ $(document).ready(function () {
             cache.setItem('update', resp.responseText);
         }, 'json');
     }
-});
+});*/
 
 </script>
 <?php include 'footer.php'; ?>

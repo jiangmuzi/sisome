@@ -6,18 +6,17 @@
 <div class="user-profile" id="main" role="main">
     <?php $this->need('user/widget_info.php'); ?>
     <div class="box">
-        <?php $this->widget('Widget_Comments_List@UserRecentReply','uid='.$this->ucenter()->uid)->to($comments); ?>
-        <?php if($comments->have()): ?>
-        <?php while($comments->next()): ?>
-            <div class="cell" style="background-color: #EDF3F5;"><?php _e('回复了');?> <a href="<?php $comments->permalink(); ?>"><?php $comments->title(); ?></a>
-                <span class="fr"><?php $comments->dateWord(); ?></span>
+        <?php if($this->comments->have()): ?>
+        <?php while($this->comments->next()): ?>
+            <div class="cell" style="background-color: #EDF3F5;"><?php _e('回复了');?> <a href="<?php $this->comments->permalink(); ?>"><?php $this->comments->title(); ?></a>
+                <span class="fr"><?php $this->comments->dateWord(); ?></span>
             </div>
-            <div class="cell"><?php $comments->content(); ?></div>
+            <div class="cell"><?php $this->comments->content(); ?></div>
         <?php endwhile; ?>
         <div class="inner pager">
-            <?php $comments->pageLink('上一页','prev');?>
-            <?php echo $comments->getCurrentPage().'/'.$comments->getTotalPage();?>
-            <?php $comments->pageLink('下一页','next');?>
+            <?php $this->comments->pageLink('上一页','prev');?>
+            <?php echo $this->comments->getCurrentPage().'/'.$this->comments->getTotalPage();?>
+            <?php $this->comments->pageLink('下一页','next');?>
         </div>
         <?php else: ?>
 		<div class="cell">

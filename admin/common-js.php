@@ -9,9 +9,9 @@
             (function () {
                 var prefix = '<?php echo Typecho_Cookie::getPrefix(); ?>',
                     cookies = {
-                        notice      :   $.cookie(prefix + '__typecho_notice'),
-                        noticeType  :   $.cookie(prefix + '__typecho_notice_type'),
-                        highlight   :   $.cookie(prefix + '__typecho_notice_highlight')
+                        notice      :   $.cookie(prefix + '__some_notice'),
+                        noticeType  :   $.cookie(prefix + '__some_notice_type'),
+                        highlight   :   $.cookie(prefix + '__some_notice_highlight')
                     },
                     path = '<?php echo Typecho_Cookie::getPath(); ?>';
 
@@ -64,13 +64,13 @@
                     });
 
                     
-                    $.cookie(prefix + '__typecho_notice', null, {path : path});
-                    $.cookie(prefix + '__typecho_notice_type', null, {path : path});
+                    $.cookie(prefix + '__some_notice', null, {path : path});
+                    $.cookie(prefix + '__some_notice_type', null, {path : path});
                 }
 
                 if (cookies.highlight) {
                     $('#' + cookies.highlight).effect('highlight', 1000);
-                    $.cookie(prefix + '__typecho_notice_highlight', null, {path : path});
+                    $.cookie(prefix + '__some_notice_highlight', null, {path : path});
                 }
             })();
 

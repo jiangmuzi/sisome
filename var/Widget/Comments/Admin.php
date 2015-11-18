@@ -95,14 +95,14 @@ class Widget_Comments_Admin extends Widget_Abstract_Comments
         if (!$this->user->pass('editor', true)) {
             $select->where('table.comments.ownerId = ?', $this->user->uid);
         } else if (!isset($this->request->cid)) {
-            if ('on' == $this->request->__typecho_all_comments) {
-                Typecho_Cookie::set('__typecho_all_comments', 'on');
+            if ('on' == $this->request->__some_all_comments) {
+                Typecho_Cookie::set('__some_all_comments', 'on');
             } else {
-                if ('off' == $this->request->__typecho_all_comments) {
-                    Typecho_Cookie::set('__typecho_all_comments', 'off');
+                if ('off' == $this->request->__some_all_comments) {
+                    Typecho_Cookie::set('__some_all_comments', 'off');
                 }
 
-                if ('on' != Typecho_Cookie::get('__typecho_all_comments')) {
+                if ('on' != Typecho_Cookie::get('__some_all_comments')) {
                     $select->where('table.comments.ownerId = ?', $this->user->uid);
                 }
             }

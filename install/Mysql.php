@@ -93,7 +93,7 @@ $baeDbPassword = "getenv('HTTP_BAE_ENV_SK')";
     </li>
     <li>
         <label class="typecho-label" for="dbDatabase"><?php _e('数据库名'); ?></label>
-        <input type="text" class="text" name="dbDatabase" id="dbDatabase" value="<?php _v('dbDatabase', 'typecho'); ?>" />
+        <input type="text" class="text" name="dbDatabase" id="dbDatabase" value="<?php _v('dbDatabase', 'somebbs'); ?>" />
     </li>
 
 <?php elseif ('GAE' == $engine): ?>
@@ -123,7 +123,7 @@ $baeDbPassword = "getenv('HTTP_BAE_ENV_SK')";
     </li>
     <li>
         <label class="typecho-label" for="dbDatabase"><?php _e('数据库名'); ?></label>
-        <input type="text" class="text" name="dbDatabase" id="dbDatabase" value="<?php _v('dbDatabase', 'typecho'); ?>" />
+        <input type="text" class="text" name="dbDatabase" id="dbDatabase" value="<?php _v('dbDatabase', 'somebbs'); ?>" />
         <p class="description"><?php _e('请填入您在Cloud SQL的实例中创建的数据库名称'); ?></p>
     </li>
 
@@ -166,10 +166,9 @@ $baeDbPassword = "getenv('HTTP_BAE_ENV_SK')";
     </li>
     <li>
         <label class="typecho-label" for="dbDatabase"><?php _e('数据库名'); ?></label>
-        <input type="text" class="text" name="dbDatabase" id="dbDatabase" value="<?php _v('dbDatabase', 'typecho'); ?>" />
+        <input type="text" class="text" name="dbDatabase" id="dbDatabase" value="<?php _v('dbDatabase', 'somebbs'); ?>" />
         <p class="description"><?php _e('请您指定数据库名称'); ?></p>
     </li>
 
 <?php  endif; ?>
 <input type="hidden" name="dbCharset" value="<?php _e('utf8'); ?>" />
-

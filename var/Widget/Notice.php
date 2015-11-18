@@ -33,7 +33,7 @@ class Widget_Notice extends Typecho_Widget
     public function highlight($theId)
     {
         $this->highlight = $theId;
-        Typecho_Cookie::set('__typecho_notice_highlight', $theId,
+        Typecho_Cookie::set('__some_notice_highlight', $theId,
         $this->widget('Widget_Options')->gmtTime + $this->widget('Widget_Options')->timezone + 86400);
     }
 
@@ -63,9 +63,9 @@ class Widget_Notice extends Typecho_Widget
             $type = $typeFix;
         }
 
-        Typecho_Cookie::set('__typecho_notice', Json::encode($notice),
+        Typecho_Cookie::set('__some_notice', Json::encode($notice),
         $this->widget('Widget_Options')->gmtTime + $this->widget('Widget_Options')->timezone + 86400);
-        Typecho_Cookie::set('__typecho_notice_type', $type,
+        Typecho_Cookie::set('__some_notice_type', $type,
         $this->widget('Widget_Options')->gmtTime + $this->widget('Widget_Options')->timezone + 86400);
     }
 }

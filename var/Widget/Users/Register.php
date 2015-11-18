@@ -49,8 +49,8 @@ class Widget_Users_Register extends Widget_Abstract_Users implements Widget_Inte
 		
         /** 截获验证异常 */
         if ($error = $validator->run($this->request->from('captcha','name', 'password', 'mail', 'confirm'))) {
-            Typecho_Cookie::set('__typecho_remember_name', $this->request->name);
-            Typecho_Cookie::set('__typecho_remember_mail', $this->request->mail);
+            Typecho_Cookie::set('__some_remember_name', $this->request->name);
+            Typecho_Cookie::set('__some_remember_mail', $this->request->mail);
             /** 设置提示信息 */
             $this->widget('Widget_Notice')->set($error,'error');
             $this->response->goBack();
@@ -59,13 +59,13 @@ class Widget_Users_Register extends Widget_Abstract_Users implements Widget_Inte
         $hasher = new PasswordHash(8, true);
         //$generatedPassword = Typecho_Common::randString(7);
         $extend = array();
-        $inviter = Typecho_Cookie::get('__typecho_inviter');
+        $inviter = Typecho_Cookie::get('__some_inviter');
         if(!empty($inviter)){
 			$inviter = $this->widget('Widget_Users_Query@name_'.$inviter,'name='.$inviter);
 			if($inviter->have())
 				$extend['inviter'] = $inviter->name;
 			
-			Typecho_Cookie::delete('__typecho_inviter');
+			Typecho_Cookie::delete('__some_inviter');
         }
         $dataStruct = array(
             'name'      =>  $this->request->name,

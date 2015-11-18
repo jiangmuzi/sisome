@@ -13,7 +13,7 @@ $(function(){
 		if(type===undefined || slug===undefined){
 			return false;
 		}
-		$.post(window.siteUrl+'action/forum?do=favorite',{fid:fid,type:type,slug:slug}).success(function(rs){
+		$.post(window.action+'/misc?do=favorite',{fid:fid,type:type,slug:slug}).success(function(rs){
 			if(rs.status==1){
 				if(fid===undefined || fid==''){
 					that.text('取消收藏').data('fid',rs.fid);
@@ -123,7 +123,7 @@ function ajaxLoadComments(){
 	if(time===undefined || time ==''){
 		return false;
 	}
-	$.get(window.siteUrl+'action/forum?do=loadcomments&t='+time).success(function(rs){
+	$.get(window.action+'/misc?do=loadcomments&t='+time).success(function(rs){
 		if(rs.status==1){
 			$('#lastCommentTime').data('last',rs.last);
 			appendComments(rs.data);

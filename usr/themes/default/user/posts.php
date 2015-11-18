@@ -6,31 +6,30 @@
 <div class="user-profile" id="main" role="main">
     <?php $this->need('user/widget_info.php'); ?>
     <div class="box">
-        <?php $this->widget('Widget_Contents_Post_List@UserPostList','page=1&uid='.$this->ucenter()->uid)->to($posts); ?>
-        <?php if($posts->have()): ?>
-        <?php while($posts->next()): ?>
+        <?php if($this->posts->have()): ?>
+        <?php while($this->posts->next()): ?>
             <article class="cell post">
-    			<a class="post-avatar" href="<?php $posts->author->ucenter(); ?>"><img class="avatar" src="<?php $posts->author->avatar();?>"></a>
-    			<h2 class="post-title"><a href="<?php $posts->permalink() ?>"><?php $posts->title() ?></a></h2>
+    			<a class="post-avatar" href="<?php $this->posts->author->ucenter(); ?>"><?php $this->posts->author->avatar();?></a>
+    			<h2 class="post-title"><a href="<?php $this->posts->permalink() ?>"><?php $this->posts->title() ?></a></h2>
     			<ul class="post-meta">
-                    <?php if($posts->category):?>
-    						<li><?php $posts->category(','); ?>&nbsp;•&nbsp;</li>
+                    <?php if($this->posts->category):?>
+    						<li><?php $this->posts->category(','); ?>&nbsp;•&nbsp;</li>
     					<?php else:?>
-    						<li><?php $posts->tags(','); ?>&nbsp;•&nbsp;</li>
+    						<li><?php $this->posts->tags(','); ?>&nbsp;•&nbsp;</li>
     					<?php endif;?>
-                    <li><a href="<?php $posts->author->ucenter(); ?>"><?php $posts->author->name(); ?></a>&nbsp;•&nbsp;</li>
-    				<li><span><?php $posts->dateWord(); ?></span></li>
-    				<?php if($posts->lastUid):?>
-    				<li>&nbsp;•&nbsp;最后回复来自：<strong><a href="<?php $posts->lastAuthor->ucenter();?>"><?php $posts->lastAuthor->name();?></a></strong></li>
+                    <li><a href="<?php $this->posts->author->ucenter(); ?>"><?php $this->posts->author->name(); ?></a>&nbsp;•&nbsp;</li>
+    				<li><span><?php $this->posts->dateWord(); ?></span></li>
+    				<?php if($this->posts->lastUid):?>
+    				<li>&nbsp;•&nbsp;最后回复来自：<strong><a href="<?php $this->posts->lastAuthor->ucenter();?>"><?php $this->posts->lastAuthor->name();?></a></strong></li>
     				<?php endif;?>
     			</ul>
-    			<div class="post-reply"><a href="<?php $posts->permalink() ?>"><?php $posts->commentsNum('%d'); ?></a></div>
+    			<div class="post-reply"><a href="<?php $this->posts->permalink() ?>"><?php $this->posts->commentsNum('%d'); ?></a></div>
             </article>
         <?php endwhile; ?>
         <div class="inner pager">
-            <?php $posts->pageLink('上一页','prev');?>
-            <?php echo $posts->getCurrentPage().'/'.$posts->getTotalPage();?>
-            <?php $posts->pageLink('下一页','next');?>
+            <?php $this->posts->pageLink('上一页','prev');?>
+            <?php echo $this->posts->getCurrentPage().'/'.$this->posts->getTotalPage();?>
+            <?php $this->posts->pageLink('下一页','next');?>
         </div>
         <?php else: ?>
 		<div class="cell">

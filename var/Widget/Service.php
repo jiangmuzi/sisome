@@ -135,8 +135,8 @@ class Widget_Service extends Widget_Abstract_Options implements Widget_Interface
                     $input['trackback'] = $trackback;
                 }
 
-                $client->setCookie('__typecho_uid', Typecho_Cookie::get('__typecho_uid'))
-                ->setCookie('__typecho_authCode', Typecho_Cookie::get('__typecho_authCode'))
+                $client->setCookie('__some_uid', Typecho_Cookie::get('__some_uid'))
+                ->setCookie('__some_authCode', Typecho_Cookie::get('__some_authCode'))
                 ->setHeader('User-Agent', $this->options->generator)
                 ->setTimeout(3)
                 ->setData($input)

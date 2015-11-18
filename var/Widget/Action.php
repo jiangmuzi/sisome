@@ -10,15 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 // +----------------------------------------------------------------------
 
 class Widget_Action extends Typecho_Widget implements Widget_Interface_Do{
-	public function options(){
-		$this->widget('Widget_User')->pass('administrator');
-		if(!TeForum_Plugin::configForm('update')->validate()){
-			$this->widget('Widget_Notice')->set(_t('设置出错'),NULL,'error');
-			$this->response->goBack();
-		}
-		$this->widget('Widget_Notice')->set(_t('设置已保存'),NULL,'success');
-		$this->response->goBack();
-	}
+
 	//收藏
 	public function favorite(){
 		$user = $this->widget('Widget_User');
@@ -74,6 +66,42 @@ class Widget_Action extends Typecho_Widget implements Widget_Interface_Do{
 	        Util_Mail::send($name);
 	    }
 	}
+	//用户头像
+	public function avatar(){
+	    $uid = $this->request->get('uid');
+	    $size = $this->request->get('s');
+	    if(!is_numeric($uid)){
+	        Typecho_Common::error(404);
+	        exit;
+	    }
+	    $path = __TYPECHO_ROOT_DIR__.Widget_Common::getAvatarPath($uid);
+		$path .= $uid.'.jpg';
+	    if(!is_file($path)){
+            $path = __TYPECHO_ROOT_DIR__.'/usr/avatar/default.jpg';
+        }
+        
+        require_once (__TYPECHO_ROOT_DIR__.'/var/Util/Image.php');
+        $image = new Image();
+        $image->open($path);
+        $type = $image->type();
+        
+        if(is_numeric($size)){
+            $image->thumb($size, $size);
+        }
+        
+        header('Content-Type:image/'.$type.';');
+
+        //输出图像
+        if('jpeg' == $type || 'jpg' == $type){
+            // 采用jpeg方式输出
+            imagejpeg($image->showImg());
+        }elseif('gif' == $type){
+            imagegif($image->showImg());
+        }else{
+            $fun  =   'image'.$type;
+            $fun($image->showImg());
+        }
+	}
     /**
      * 绑定动作
      *
@@ -83,6 +111,7 @@ class Widget_Action extends Typecho_Widget implements Widget_Interface_Do{
     public function action(){
 		$this->on($this->request->is('do=sendmail'))->sendMail();
         $this->on($this->request->is('do=favorite'))->favorite();
+        $this->on($this->request->is('do=avatar'))->avatar();
         $this->on($this->request->is('do=loadcomments'))->loadcomments();
     }
 }

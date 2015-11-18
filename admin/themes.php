@@ -11,7 +11,7 @@ include 'menu.php';
             <div class="col-mb-12">
                 <ul class="typecho-option-tabs fix-tabs clearfix">
                     <li class="current"><a href="<?php $options->adminUrl('themes.php'); ?>"><?php _e('可以使用的外观'); ?></a></li>
-                    <?php if (!defined('__TYPECHO_THEME_WRITEABLE__') || __TYPECHO_THEME_WRITEABLE__): ?>
+                    <?php if (!defined('__some_THEME_WRITEABLE__') || __some_THEME_WRITEABLE__): ?>
                     <li><a href="<?php $options->adminUrl('theme-editor.php'); ?>"><?php _e('编辑当前外观'); ?></a></li>
                     <?php endif; ?>
                     <?php if (Widget_Themes_Config::isExists()): ?>
@@ -45,7 +45,7 @@ include 'menu.php';
                                     <p><?php echo nl2br($themes->description); ?></p>
                                     <?php if($options->theme != $themes->name): ?>
                                         <p>
-                                            <?php if (!defined('__TYPECHO_THEME_WRITEABLE__') || __TYPECHO_THEME_WRITEABLE__): ?>
+                                            <?php if (!defined('__some_THEME_WRITEABLE__') || __some_THEME_WRITEABLE__): ?>
                                             <a class="edit" href="<?php $options->adminUrl('theme-editor.php?theme=' . $themes->name); ?>"><?php _e('编辑'); ?></a> &nbsp;
                                             <?php endif; ?>
                                             <a class="activate" href="<?php $security->index('/action/themes-edit?change=' . $themes->name); ?>"><?php _e('启用'); ?></a>

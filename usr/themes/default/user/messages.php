@@ -17,27 +17,26 @@
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
             <?php $this->getMetaTitle();?>
         </div>
-        <?php $this->widget('Widget_Messages_List')->to($messages);?>
-        <?php if($messages->have()):?>
-        <?php while ($messages->next()):?>
-            <?php if($messages->type=='comment'):?>
+        <?php if($this->messages->have()):?>
+        <?php while ($this->messages->next()):?>
+            <?php if($this->messages->type=='comment'):?>
                 <div class="cell" style="background-color: #EDF3F5;">
-                <a href="<?php $messages->author->ucenter();?>" target="_blank"><?php $messages->author->name();?></a>
-                <?php _e('在'); $messages->dateWord();_e('回复了你的主题：');?>
-                <a href="<?php $messages->permalink();?>" target="_blank"><?php $this->title();?></a>
+                <a href="<?php $this->messages->author->ucenter();?>" target="_blank"><?php $this->messages->author->name();?></a>
+                <?php _e('在'); $this->messages->dateWord();_e('回复了你的主题：');?>
+                <a href="<?php $this->messages->permalink();?>" target="_blank"><?php $this->messages->title();?></a>
                 </div>
 				<div class="cell">
 				<?php $messages->content();?>
                 </div>
             <?php endif;?>
-			<?php if($messages->type=='at'):?>
+			<?php if($this->messages->type=='at'):?>
                 <div class="cell" style="background-color: #EDF3F5;">
-                <a href="<?php $messages->author->ucenter();?>" target="_blank"><?php $messages->author->name();?></a>
-                <?php _e('在'); $messages->dateWord();_e('回复中@你：');?>
-				<a href="<?php $messages->permalink();?>" target="_blank"><?php _e('查看')?></a>
+                <a href="<?php $this->messages->author->ucenter();?>" target="_blank"><?php $this->messages->author->name();?></a>
+                <?php _e('在'); $this->messages->dateWord();_e('回复中@你：');?>
+				<a href="<?php $this->messages->permalink();?>" target="_blank"><?php _e('查看')?></a>
                 </div>
 				<div class="cell">
-				<?php $messages->content();?>
+				<?php $this->messages->content();?>
                 </div>
             <?php endif;?>
         <?php endwhile;?>

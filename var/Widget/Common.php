@@ -75,7 +75,7 @@ class Widget_Common
      * 获取提示消息
      */
     public static function getNotice(){
-        $notice = Typecho_Cookie::get('__typecho_notice');
+        $notice = Typecho_Cookie::get('__some_notice');
         if(empty($notice)){
             echo "''";
             return ;
@@ -83,10 +83,10 @@ class Widget_Common
         $notice = json_decode($notice,true);
         $rs = array(
             'msg'=>$notice[0],
-            'type'=>Typecho_Cookie::get('__typecho_notice_type')
+            'type'=>Typecho_Cookie::get('__some_notice_type')
         );
-        Typecho_Cookie::delete('__typecho_notice');
-        Typecho_Cookie::delete('__typecho_notice_type');
+        Typecho_Cookie::delete('__some_notice');
+        Typecho_Cookie::delete('__some_notice_type');
         echo json_encode($rs);
     }
     /**
@@ -119,17 +119,6 @@ class Widget_Common
         }
         return $r;
     }
-    /**
-     * 根据用户ID获取三种规格的头像
-     * @param number $uid
-     * @return string
-     */
-	public static function parseUserAvatar($uid){
-		$avatar['avatar'] = self::avatar($uid,'48');
-        $avatar['avatar96'] = self::avatar($uid,'96');
-		$avatar['avatar24'] = self::avatar($uid,'24');
-		return $avatar;
-    }
 	/**
 	 * 根据用户ID获取头像路径
 	 * @param number $uid
@@ -150,13 +139,14 @@ class Widget_Common
 	 * @param string $type
 	 * @return string
 	 */
-	public static function avatar($uid,$type='48'){
-		$options = Typecho_Widget::widget('Widget_Options');
-		$path = self::getAvatarPath($uid);
-		$path = $path.$uid.'_'.$type.'.jpg';
-		if(!is_file(__TYPECHO_ROOT_DIR__.$path)){
-            $path = '/usr/avatar/default.jpg';
-        }
-		return Typecho_Common::url($path, $options->siteUrl);
+	public static function avatar($uid,$size='48',$screenName = null, $class = 'avatar',$isEcho = true){
+		$url = Typecho_Common::url('action/misc?do=avatar&uid='.$uid.'&s='.$size,Typecho_Widget::widget('Widget_Options')->index);
+        $html = '<img' . (empty($class) ? '' : ' class="' . $class . '"') . ' src="' . $url . '" '.
+        (empty($screenName) ? '' :  ' alt="' . $screenName . '"'). '" width="' . $size . '" height="' . $size . '" />';
+	   if($isEcho){
+	       echo $html;
+	   }else{
+	       return $html;
+	   }
 	}
 }

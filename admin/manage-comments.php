@@ -5,7 +5,7 @@ include 'menu.php';
 
 $stat = Typecho_Widget::widget('Widget_Stat');
 $comments = Typecho_Widget::widget('Widget_Comments_Admin');
-$isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == Typecho_Cookie::get('__typecho_all_comments'));
+$isAllComments = ('on' == $request->get('__some_all_comments') || 'on' == Typecho_Cookie::get('__some_all_comments'));
 ?>
 <div class="main">
     <div class="body container">
@@ -15,8 +15,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == Typ
                 <div class="clearfix">
                     <ul class="typecho-option-tabs right">
                     <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
-                        <li class="<?php if($isAllComments): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=on'); ?>"><?php _e('所有'); ?></a></li>
-                        <li class="<?php if(!$isAllComments): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=off'); ?>"><?php _e('我的'); ?></a></li>
+                        <li class="<?php if($isAllComments): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__some_all_comments=on'); ?>"><?php _e('所有'); ?></a></li>
+                        <li class="<?php if(!$isAllComments): ?> current<?php endif; ?>"><a href="<?php echo $request->makeUriByRequest('__some_all_comments=off'); ?>"><?php _e('我的'); ?></a></li>
                     <?php endif; ?>
                     </ul>
                     <ul class="typecho-option-tabs">
@@ -225,16 +225,16 @@ $(document).ready(function () {
     // 记住滚动条
     function rememberScroll () {
         $(window).bind('beforeunload', function () {
-            $.cookie('__typecho_comments_scroll', $('body').scrollTop());
+            $.cookie('__some_comments_scroll', $('body').scrollTop());
         });
     }
 
     // 自动滚动
     (function () {
-        var scroll = $.cookie('__typecho_comments_scroll');
+        var scroll = $.cookie('__some_comments_scroll');
 
         if (scroll) {
-            $.cookie('__typecho_comments_scroll', null);
+            $.cookie('__some_comments_scroll', null);
             $('html, body').scrollTop(scroll);
         }
     })();

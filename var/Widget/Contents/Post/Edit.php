@@ -188,7 +188,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
     protected function getPageOffsetQuery($created, $status = NULL)
     {
         return 'page=' . $this->getPageOffset('created', $created, 'post', $status,
-        'on' == $this->request->__typecho_all_posts ? 0 : $this->user->uid);
+        'on' == $this->request->__some_all_posts ? 0 : $this->user->uid);
     }
 
     /**

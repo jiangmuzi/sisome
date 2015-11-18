@@ -8,10 +8,11 @@
             ->parse('<a href="{permalink}" title="{title}">{title}</a>'); ?>
         </div>
         <p> &copy; <?php echo date('Y');?> <a href="<?php $this->options->siteUrl(); ?>" target="_blank"> <?php $this->options->title() ?> </a>
-            <?php _e(' / Powered by <a href="http://www.typecho.org" target="_blank">Typecho</a>'); ?>
+            <?php _e(' / Powered by <a href="http://www.sisome.com" target="_blank">SOMEBBS</a> & <a href="http://www.typecho.org" target="_blank">Typecho</a>'); ?>
             <?php if ($this->options->siteIcp): ?>
                / <a href="http://www.miitbeian.gov.cn/" target="blank"><?php $this->options->siteIcp(); ?></a>
             <?php endif; ?>
+			<!-- 网站统计代码 -->
 			<?php if ($this->options->siteStat): ?>
 				<span style="display:none;"><?php $this->options->siteStat(); ?></span>
 			<?php endif; ?>
@@ -27,9 +28,5 @@
 <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="<?php $this->options->themeUrl('js/common.js'); ?>"></script>
 <?php $this->footer(); ?>
-<!-- 网站统计代码 -->
-<?php if($this->options->siteStat):?>
-<?php $this->options->siteStat();?>
-<?php endif;?>
 </body>
 </html>

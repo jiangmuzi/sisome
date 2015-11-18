@@ -22,7 +22,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
     <?php if($archives->have()):?>
 	<?php while($archives->next()): ?>
         <article class="cell post">
-			<a class="post-avatar" href="<?php $archives->author->ucenter(); ?>"><img class="avatar" src="<?php $archives->author->avatar();?>"></a>
+			<a class="post-avatar" href="<?php $archives->author->ucenter(); ?>"><?php $archives->author->avatar();?></a>
 			<h2 class="post-title"><a href="<?php $archives->permalink() ?>"><?php $archives->title() ?></a></h2>
 			<ul class="post-meta">
                 <?php if($archives->category):?>

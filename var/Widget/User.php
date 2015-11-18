@@ -145,8 +145,8 @@ class Widget_User extends Typecho_Widget
                     bin2hex(openssl_random_pseudo_bytes(16)) : sha1(Typecho_Common::randString(20));
                 $user['authCode'] = $authCode;
 
-                Typecho_Cookie::set('__typecho_uid', $user['uid'], $expire);
-                Typecho_Cookie::set('__typecho_authCode', Typecho_Common::hash($authCode), $expire);
+                Typecho_Cookie::set('__some_uid', $user['uid'], $expire);
+                Typecho_Cookie::set('__some_authCode', Typecho_Common::hash($authCode), $expire);
 
                 //更新最后登录时间以及验证码
                 $this->db->query($this->db
@@ -205,8 +205,8 @@ class Widget_User extends Typecho_Widget
             return;
         }
 
-        Typecho_Cookie::delete('__typecho_uid');
-        Typecho_Cookie::delete('__typecho_authCode');
+        Typecho_Cookie::delete('__some_uid');
+        Typecho_Cookie::delete('__some_authCode');
     }
 
     /**
@@ -220,14 +220,14 @@ class Widget_User extends Typecho_Widget
         if (NULL !== $this->_hasLogin) {
             return $this->_hasLogin;
         } else {
-            $cookieUid = Typecho_Cookie::get('__typecho_uid');
+            $cookieUid = Typecho_Cookie::get('__some_uid');
             if (NULL !== $cookieUid) {
                 /** 验证登陆 */
                 $user = $this->db->fetchRow($this->db->select()->from('table.users')
                 ->where('uid = ?', intval($cookieUid))
                 ->limit(1));
 
-                $cookieAuthCode = Typecho_Cookie::get('__typecho_authCode');
+                $cookieAuthCode = Typecho_Cookie::get('__some_authCode');
                 if ($user && Typecho_Common::hashValidate($user['authCode'], $cookieAuthCode)) {
                     $this->_user = $user;
                     return ($this->_hasLogin = true);

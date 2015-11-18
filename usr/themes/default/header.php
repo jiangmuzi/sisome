@@ -21,6 +21,7 @@
     <script>
     window.notice = <?php Widget_Common::getNotice();?>;
 	window.siteUrl = '<?php $this->options->siteUrl();?>';
+	window.action = '<?php $this->options->index('action');?>';
     </script>
 </head>
 <body>
@@ -45,8 +46,8 @@
 				<a href="<?php $this->options->someUrl('setting'); ?>"><?php _e('设置'); ?></a>
                 <a href="<?php $this->options->logoutUrl(); ?>"><?php _e('退出'); ?></a>
             <?php else: ?>
-                <a href="<?php $this->options->someUrl('login'); ?>"><?php _e('登录'); ?></a>
-                <a href="<?php $this->options->someUrl('register'); ?>"><?php _e('注册'); ?></a>
+                <a href="<?php $this->options->loginUrl(); ?>"><?php _e('登录'); ?></a>
+                <a href="<?php $this->options->registerUrl(); ?>"><?php _e('注册'); ?></a>
             <?php endif; ?>
         </div>
     </div>

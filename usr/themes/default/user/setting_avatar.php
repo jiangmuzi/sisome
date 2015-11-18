@@ -16,9 +16,9 @@
         <div class="field">
 	          <label>当前头像</label>
 	          <p class="m0">
-					<img class="avatar vab mr10" width="96" src="<?php echo Widget_Common::avatar($this->user->uid,96);?>" align="default">
-					<img class="avatar vab mr10" width="48" src="<?php echo Widget_Common::avatar($this->user->uid,48);?>" align="default">
-					<img class="avatar vab mr10" width="24" src="<?php echo Widget_Common::avatar($this->user->uid,24);?>" align="default">
+					<?php Widget_Common::avatar($this->user->uid,96,null,'avatar vab mr10');?>
+					<?php Widget_Common::avatar($this->user->uid,48,null,'avatar vab mr10');?>
+					<?php Widget_Common::avatar($this->user->uid,24,null,'avatar vab mr10');?>
                 </p>
 	      </div>
 	      <div class="field">

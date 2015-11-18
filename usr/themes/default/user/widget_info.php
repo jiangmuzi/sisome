@@ -2,7 +2,7 @@
 <div class="user-meta box">
 	<div class="cell flowhd">
 	  <a href="<?php $this->ucenter()->ucenter();?>">
-	   <img class="avatar fl" src="<?php $this->ucenter()->avatar96(); ?>">
+	   <?php $this->ucenter()->avatar(96,'avatar fl'); ?>
 	  </a>
 	  <h1 class="user-title"><a href="<?php $this->options->someUrl('ucenter',array('u'=>$this->ucenter()->name));?>"><?php $this->ucenter()->screenName();?></a> </h1>
     <?php if($this->ucenter()->sign):?><p class="m0"><strong><?php $this->ucenter()->sign();?></strong></p><?php endif;?>

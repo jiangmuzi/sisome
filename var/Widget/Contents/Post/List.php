@@ -92,8 +92,12 @@ class Widget_Contents_Post_List extends Widget_Abstract_Contents
                 'day'=>0,            //几天内的数据
                 'cid'=>'',
                 'uid'=>'',
+				'page'=>0
             ));
         $this->_currentPage = $this->request->get('page', 1);
+		if($this->parameter->page){
+			$this->_currentPage = $this->parameter->page;
+		}
         $desc = $this->parameter->desc ? Typecho_Db::SORT_DESC : Typecho_Db::SORT_ASC ;
         $select = $this->select()
             ->where('table.contents.status = ?', 'publish')

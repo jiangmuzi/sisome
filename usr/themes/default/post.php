@@ -10,7 +10,7 @@
         </div>
 		<div class="fr">
 		  <a class="post-avatar" href="<?php $this->author->ucenter(); ?>">
-		      <img class="avatar" src="<?php $this->author->avatar96();?>"></a>
+		      <?php $this->author->avatar(96);?></a>
 		</div>
 		<h1 class="post-title"><?php $this->title() ?></h1>
         <ul class="post-meta">

@@ -2,14 +2,14 @@
 <?php $this->need('header.php'); ?>
 <style>.user-page .page-title,.user-page footer{display:none;}</style>
 <?php
-	$rememberName = htmlspecialchars(Typecho_Cookie::get('__typecho_remember_name'));
-	$rememberMail = htmlspecialchars(Typecho_Cookie::get('__typecho_remember_mail'));
-	$notice = Typecho_Cookie::get('__typecho_notice');
+	$rememberName = htmlspecialchars(Typecho_Cookie::get('__some_remember_name'));
+	$rememberMail = htmlspecialchars(Typecho_Cookie::get('__some_remember_mail'));
+	$notice = Typecho_Cookie::get('__some_notice');
 	if(!empty($notice)) {
 		$notice = json_decode($notice,true);
 	}
-	Typecho_Cookie::delete('__typecho_remember_name');
-	Typecho_Cookie::delete('__typecho_remember_mail');
+	Typecho_Cookie::delete('__some_remember_name');
+	Typecho_Cookie::delete('__some_remember_mail');
 ?>
 <div id="sidebar">
     <?php $this->need('user/widget_login.php'); ?>

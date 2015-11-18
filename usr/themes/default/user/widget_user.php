@@ -2,7 +2,7 @@
 <?php if($this->user->hasLogin()):?>
 <div class="user-widget box">
     <div class="head clearfix">
-        <a class="fl" href="<?php $this->options->index('u/'.$this->user->name);?>"><img class="avatar" width="48" src="<?php echo Widget_Common::avatar($this->user->uid,48); ?>"></a>
+        <a class="fl" href="<?php $this->options->index('u/'.$this->user->name);?>"><?php Widget_Common::avatar($this->user->uid,48,$this->user->screenName); ?></a>
         <a class="user-nickname" href="<?php $this->options->index('u/'.$this->user->name);?>"><?php $this->user->name();?></a>
     </div>
     <?php $stat = $this->widget('Widget_Stat');?>
@@ -32,4 +32,6 @@
         <a class="credits-area fr" href="<?php $this->options->someUrl('credits');?>"><?php $this->user->credits();?> <img src="<?php $this->options->themeUrl('img/credits.png');?>" alt="Credits" align="absmiddle" border="0"></a>
     </div>
 </div>
+<?php else:?>
+<?php $this->need('user/widget_login.php'); ?>
 <?php endif;?>

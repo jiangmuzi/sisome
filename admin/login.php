@@ -4,8 +4,8 @@ include 'common.php';
 if ($user->hasLogin()) {
     $response->redirect($options->adminUrl);
 }
-$rememberName = htmlspecialchars(Typecho_Cookie::get('__typecho_remember_name'));
-Typecho_Cookie::delete('__typecho_remember_name');
+$rememberName = htmlspecialchars(Typecho_Cookie::get('__some_remember_name'));
+Typecho_Cookie::delete('__some_remember_name');
 
 $bodyClass = 'body-100';
 

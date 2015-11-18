@@ -49,7 +49,7 @@ class Widget_Do extends Typecho_Widget
         'users-profile'             =>  'Widget_Users_Profile',
         // modified_by_jiangmuzi 2015.09.23
         'publish'                   =>  'Widget_Contents_Publish',
-        'forum'                     =>  'Widget_Action',
+        'misc'                      =>  'Widget_Action',
         //end modified
     );
 

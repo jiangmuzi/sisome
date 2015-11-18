@@ -36,15 +36,14 @@
 		      </tr>
 		  </thead>
 		  <tbody>
-		       <?php Typecho_Widget::widget('Widget_Credits_List')->to($credits); ?>
-		      <?php if($credits->have()):?>
-		      <?php while ($credits->next()):?>
+		      <?php if($this->credits->have()):?>
+		      <?php while ($this->credits->next()):?>
 		      <tr>
-                <td><small class="gray"><?php $credits->date('Y-m-d H:i:s');?></small></td>
-                <td><?php $credits->name();?></td>
-                <td><span class="positive"><strong><?php $credits->amount();?></strong></span></td>
-                <td><?php $credits->balance();?></td>
-                <td class="d" style="border-right: none;"><span class="gray"><?php $credits->remark();?> <strong class="positive"><?php echo abs($credits->amount);?></span></strong></td>
+                <td><small class="gray"><?php $this->credits->date('Y-m-d H:i:s');?></small></td>
+                <td><?php $this->credits->name();?></td>
+                <td><span class="positive"><strong><?php $this->credits->amount();?></strong></span></td>
+                <td><?php $this->credits->balance();?></td>
+                <td class="d" style="border-right: none;"><span class="gray"><?php $this->credits->remark();?> <strong class="positive"><?php $this->credits->amount();?></span></strong></td>
             </tr>
             <?php endwhile;?>
             <?php endif;?>
@@ -52,9 +51,9 @@
 		</table>
 		</div>
 		<div class="inner pager">
-		  <?php $credits->pageLink('上一页','prev');?>
-		  <?php echo $credits->getCurrentPage();?>/<?php echo $credits->getTotalPage();?>
-		  <?php $credits->pageLink('下一页','next');?>
+		  <?php $this->credits->pageLink('上一页','prev');?>
+		  <?php echo $this->credits->getCurrentPage();?>/<?php echo $this->credits->getTotalPage();?>
+		  <?php $this->credits->pageLink('下一页','next');?>
 		</div>
 	</div>
 </div><!-- end #main -->

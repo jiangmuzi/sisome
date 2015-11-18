@@ -79,69 +79,36 @@ class Widget_Comments_Archive extends Widget_Abstract_Comments
             $this->_customThreadedCommentsCallback = true;
         }
     }
-    
-    /**
+	/**
      * 评论回调函数
      * 
      * @access private
      * @return void
      */
-    private function threadedCommentsCallback()
-    {
-        $singleCommentOptions = $this->_singleCommentOptions;
+    private function threadedCommentsCallback(){
+		$singleCommentOptions = $this->_singleCommentOptions;
         if ($this->_customThreadedCommentsCallback) {
             return threadedComments($this, $singleCommentOptions);
         }
-        
-        $commentClass = '';
-        if ($this->authorId) {
-            if ($this->authorId == $this->ownerId) {
-                $commentClass .= ' comment-by-author';
-            } else {
-                $commentClass .= ' comment-by-user';
-            }
-        }
-        
-        $commentLevelClass = $this->levels > 0 ? ' comment-child' : ' comment-parent';
-?>
-<li itemscope itemtype="http://schema.org/UserComments" id="<?php $this->theId(); ?>" class="comment-body<?php
-    if ($this->levels > 0) {
-        echo ' comment-child';
-        $this->levelsAlt(' comment-level-odd', ' comment-level-even');
-    } else {
-        echo ' comment-parent';
-    }
-    $this->alt(' comment-odd', ' comment-even');
-    echo $commentClass;
-?>">
-    <div class="comment-author" itemprop="creator" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="image"><?php $this->gravatar($singleCommentOptions->avatarSize, $singleCommentOptions->defaultAvatar); ?></span>
-        <cite class="fn" itemprop="name"><?php $singleCommentOptions->beforeAuthor();
-        $this->author();
-        $singleCommentOptions->afterAuthor(); ?></cite>
-    </div>
-    <div class="comment-meta">
-        <a href="<?php $this->permalink(); ?>"><time itemprop="commentTime" datetime="<?php $this->date('c'); ?>"><?php $singleCommentOptions->beforeDate();
-        $this->date($singleCommentOptions->dateFormat);
-        $singleCommentOptions->afterDate(); ?></time></a>
-        <?php if ('waiting' == $this->status) { ?>
-        <em class="comment-awaiting-moderation"><?php $singleCommentOptions->commentStatus(); ?></em>
-        <?php } ?>
-    </div>
-    <div class="comment-content" itemprop="commentText">
-    <?php $this->content(); ?>
-    </div>
-    <div class="comment-reply">
-        <?php $this->reply($singleCommentOptions->replyWord); ?>
-    </div>
-    <?php if ($this->children) { ?>
-    <div class="comment-children" itemprop="discusses">
-        <?php $this->threadedComments(); ?>
-    </div>
-    <?php } ?>
-</li>
-<?php
-    }
+		$this->realAuthorUrl = $this->authorId ?  $this->poster->ucenter : 'javascript:;';
+		$commentClass = '';
+		if ($this->authorId && $this->authorId == $this->ownerId) {
+			$commentClass = ' reply-by-author';
+		}
+		echo "<div id=\"{$this->theId}\" class=\"cell{$commentClass}\"><div class=\"reply-avatar fl\">";
+		$this->poster->avatar(48);
+		echo '</div><div class="fr">';
+		echo '<a href="javascript:replyAt(\''.$this->poster->name.'\');">' . $singleCommentOptions->replyWord . '</a>';
+		echo '</div><p><a href="'.$this->realAuthorUrl.'">'.$this->poster->name.'</a>';
+		echo '<span class="reply-time">';
+		$this->dateWord();
+		echo '</span></p><div class="reply-content">';
+		$this->content();
+		echo '</div></div>';
+		if ($this->children){
+			$this->threadedComments();
+		}
+	}
     
     /**
      * 获取当前评论链接
@@ -226,8 +193,8 @@ class Widget_Comments_Archive extends Widget_Abstract_Comments
             return;
         }
 
-        $commentsAuthor = Typecho_Cookie::get('__typecho_remember_author');
-        $commentsMail = Typecho_Cookie::get('__typecho_remember_mail');
+        $commentsAuthor = Typecho_Cookie::get('__some_remember_author');
+        $commentsMail = Typecho_Cookie::get('__some_remember_mail');
         $select = $this->select()->where('table.comments.cid = ?', $this->parameter->parentId)
         ->where('table.comments.status = ? OR (table.comments.author = ? AND table.comments.mail = ? AND table.comments.status = ?)', 'approved', $commentsAuthor, $commentsMail, 'waiting');
         $threadedSelect = NULL;

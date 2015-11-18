@@ -102,7 +102,7 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
 
         if ($error = $validator->run($comment)) {
             /** 记录文字 */
-            Typecho_Cookie::set('__typecho_remember_text', $comment['text']);
+            Typecho_Cookie::set('__some_remember_text', $comment['text']);
             throw new Typecho_Widget_Exception(implode("\n", $error));
         }
 
@@ -110,7 +110,7 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
         try {
             $comment = $this->pluginHandle()->comment($comment, $this->_content);
         } catch (Typecho_Exception $e) {
-            Typecho_Cookie::set('__typecho_remember_text', $comment['text']);
+            Typecho_Cookie::set('__some_remember_text', $comment['text']);
             throw $e;
         }
         
@@ -143,7 +143,7 @@ class Widget_Feedback extends Widget_Abstract_Comments implements Widget_Interfa
         // end modified
         /** 添加评论 */
         $commentId = $this->insert($comment);
-        Typecho_Cookie::delete('__typecho_remember_text');
+        Typecho_Cookie::delete('__some_remember_text');
         $this->db->fetchRow($this->select()->where('coid = ?', $commentId)
         ->limit(1), array($this, 'push'));
         

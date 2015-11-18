@@ -380,6 +380,11 @@ class Widget_Options extends Typecho_Widget
             $this->siteUrl = substr_replace($this->siteUrl, 'https', 0, 4);
         }
 
+		//$router = include __TYPECHO_ROOT_DIR__.'/var/config.php';
+		//$parser = new Typecho_Router_Parser($router);
+		//$parsedRoutingTable = $parser->parse();
+		//$this->routingTable = array($parsedRoutingTable);
+		
         /** 自动初始化路由表 */
         $this->routingTable = unserialize($this->routingTable);
         if (!isset($this->routingTable[0])) {
@@ -581,8 +586,7 @@ class Widget_Options extends Typecho_Widget
 			echo $url;
 		}else{
 			return $url;
-		}
-		 
+		} 
 	}
 	public function someAction($route,$params=null,$echo=true){
 	    $params['action'] = $route;
@@ -593,6 +597,5 @@ class Widget_Options extends Typecho_Widget
 		}else{
 			return $url;
 		}
-		
 	}
 }

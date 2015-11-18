@@ -33,7 +33,7 @@
             </div>
         <?php else: ?>
         <p class="m20 aligncenter">
-                        已注册用户请 <a class="btn" href="<?php $this->options->someUrl('login');?>?redir=<?php echo $this->request->getRequestUrl();?>"><?php _e('登录');?></a> 或者 <a class="btn" href="<?php $this->options->someUrl('register');?>"><?php _e('现在注册');?></a></p>
+                        已注册用户请 <a class="btn" href="<?php $this->options->loginUrl();?>?redir=<?php echo $this->request->getRequestUrl();?>"><?php _e('登录');?></a> 或者 <a class="btn" href="<?php $this->options->registerUrl();?>"><?php _e('现在注册');?></a></p>
         <?php endif; ?>
 	</form>
     

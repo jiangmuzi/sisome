@@ -27,7 +27,7 @@ class Widget_Users_Login extends Widget_Abstract_Users implements Widget_Interfa
 		
 		/** 截获验证异常 */
         if ($error = $validator->run($this->request->from('name', 'password'))) {
-            Typecho_Cookie::set('__typecho_remember_name', $this->request->name);
+            Typecho_Cookie::set('__some_remember_name', $this->request->name);
 
             /** 设置提示信息 */
             $this->widget('Widget_Notice')->set($error);
@@ -43,7 +43,7 @@ class Widget_Users_Login extends Widget_Abstract_Users implements Widget_Interfa
             /** 防止穷举,休眠3秒 */
             sleep(3);
 
-            Typecho_Cookie::set('__typecho_remember_name', $this->request->name);
+            Typecho_Cookie::set('__some_remember_name', $this->request->name);
             $this->widget('Widget_Notice')->set(_t('用户名或密码无效'), 'error');
             $this->response->goBack('?referer=' . urlencode($this->request->referer));
         }
