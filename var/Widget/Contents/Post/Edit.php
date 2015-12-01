@@ -714,8 +714,7 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
      */
     public function writePost()
     {
-        $contents = $this->request->from('password', 'allowComment',
-            'allowPing', 'allowFeed', 'slug', 'tags', 'text', 'visibility');
+        $contents = $this->request->from('password', 'allowComment', 'allowFeed', 'slug', 'tags', 'text', 'visibility');
 
         $contents['category'] = $this->request->getArray('category');
         $contents['title'] = $this->request->get('title', _t('未命名文档'));
@@ -734,10 +733,6 @@ class Widget_Contents_Post_Edit extends Widget_Abstract_Contents implements Widg
 
             // 完成发布插件接口
             $this->pluginHandle()->finishPublish($contents, $this);
-
-            /** 发送ping */
-            $trackback = array_unique(preg_split("/(\r|\n|\r\n)/", trim($this->request->trackback)));
-            $this->widget('Widget_Service')->sendPing($this->cid, $trackback);
 
             /** 设置提示信息 */
             $this->widget('Widget_Notice')->set('post' == $this->type ?

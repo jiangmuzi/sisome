@@ -44,13 +44,13 @@ class Widget_Ajax extends Widget_Abstract_Options implements Widget_Interface_Do
         if ($client) {
             $client->setHeader('User-Agent', $this->options->generator)
                 ->setTimeout(10)
-                ->send('https://github.com/typecho/typecho/releases.atom');
+                ->send('https://github.com/jiangmuzi/sisome/releases.atom');
 
             /** 匹配内容体 */
             $response = $client->getResponseBody();
             preg_match_all("/<link rel=\"alternate\"[^>]+href=\"([^>]*)\"\s*\/>/is", $response, $matches);
             $result = array('available' => 0);
-
+			
             list($soft, $version) = explode(' ', $this->options->generator);
             $current = explode('/', $version);
 
@@ -91,7 +91,7 @@ class Widget_Ajax extends Widget_Abstract_Options implements Widget_Interface_Do
         if ($client) {
             $client->setHeader('User-Agent', $this->options->generator)
                 ->setTimeout(10)
-                ->send('http://typecho.org/feed/');
+                ->send('http://www.sisome.com/feed/tag/sisome/');
 
             /** 匹配内容体 */
             $response = $client->getResponseBody();

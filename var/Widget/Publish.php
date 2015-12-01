@@ -126,19 +126,8 @@ class Widget_Publish extends Widget_Abstract_Contents{
      * @see Widget_Abstract::render()
      */
     public function render(){
-        if($this->request->isPost()){
-            $this->doPublish();
-        
-            /** 设置提示信息 */
-            $this->widget('Widget_Notice')->set('post' == $this->type ?
-                _t('文章 "<a href="%s">%s</a>" 已经发布', $this->permalink, $this->title) :
-                _t('文章 "%s" 等待审核', $this->title), 'success');
-            $this->response->goBack();
-        }else{
-            $this->_metaTitle = '创作新主题';
-            $this->setCurrentTag();
-             
-        }
+        $this->_metaTitle = '创作新主题';
+		$this->setCurrentTag();
         /** 输出模板 */
         require_once $this->_themeDir . 'publish.php';
     }
@@ -164,8 +153,7 @@ EOT;
         echo $html;
     }
     public function footer(){
-        $nodetags = Widget_Common::allNodeTags();
-        $topicNode = isset($this->currentTag['parent']) ? (($this->currentTag['parent'] != 0) ? $this->currentTag['parent'] : $this->currentTag['mid'] ) : 0;
+        $topicNode = isset($this->currentTag['mid']) ? $this->currentTag['mid'] : 0;
         $preview_url = Typecho_Common::url('action/publish', $this->options->index);
         $html = <<<EOT
 <script src="{$this->options->themeUrl('codemirror/codemirror.js','default')}"></script>
@@ -204,33 +192,15 @@ $('#topic-node').on('change',function(){
 	    return false;
 	}
 	that.data('mid',select);
-	setRecTags(select);
 });
-function setRecTags(mid){
-	var nodes = {$nodetags},html='<strong>推荐标签：</strong>';
-	if(nodes[mid]!==undefined){
-		$.each(nodes[mid] ,function(id,tags){
-		    html += '<a class="tag" href="#'+tags.slug+'">'+tags.name+'</a>';
-		});
-	}else{
-		//html='<strong>暂无推荐</strong>'
-	}
-	$('#topic-hot-tags').html(html);
-}
 //设置默认
 $('#topic-node').val({$topicNode});
-setRecTags({$topicNode});
 
 //标签
 $('#tagsInput').tagsInput({
 	width:'auto',
 	height:'auto',
 	defaultText : '请输入标签名'
-});
-$(document).on('click','#topic-hot-tags a',function(){
-	var tag = $(this).text();
-    $('#tagsInput').addTag(tag);
-    return false;
 });
 
 function prevTopic(){

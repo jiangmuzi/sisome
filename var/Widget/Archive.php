@@ -227,6 +227,15 @@ class Widget_Archive extends Widget_Abstract_Contents
      * @var Widget_Users_Query
      */
     private $_ucenter;
+	
+	/**
+     * 分类自定义样式
+     *
+     * @access private
+     * @var Widget_Users_Query
+     */
+    private $_archiveStyle;
+	
     /**
      * 构造函数,初始化组件
      *
@@ -555,7 +564,7 @@ class Widget_Archive extends Widget_Abstract_Contents
     {
         if(!empty($this->_archiveTitle) && empty($this->_metaTitle))
             $this->_metaTitle = $this->_archiveTitle;
-        echo empty($this->_metaTitle) ? '' : $this->_metaTitle . $slug;
+        return empty($this->_metaTitle) ? '' : $this->_metaTitle . $slug;
     }
     /**
      * @return the $_description
@@ -709,6 +718,7 @@ class Widget_Archive extends Widget_Abstract_Contents
      */
     private function import(Widget_Archive $widget)
     {
+		
         $currentProperties = get_object_vars($this);
 
         foreach ($currentProperties as $name => $value) {
@@ -729,6 +739,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                 }
             }
         }
+
     }
 
     /**
@@ -811,7 +822,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             $matched = Typecho_Router::match($this->request->permalink);
 
             if ($matched && $matched instanceof Widget_Archive && $matched->is('single')) {
-                $this->import($matched);
+				$this->import($matched);
                 $hasPushed = true;
                 return;
             }
@@ -933,13 +944,15 @@ class Widget_Archive extends Widget_Abstract_Contents
         $hasPushed = true;
         
         // modified_by_jiangmuzi 2015.09.23
+		
+		if(isset($this->categories[0]))
+			$this->_archiveStyle = $this->categories[0]['style'];
+		
         // 更新浏览数
-        if('post' == $this->type){
-            $this->db->query($this->db->update('table.contents')->rows(array('viewsNum' => (int)$this->viewsNum+1))->where('cid = ?', $this->cid));
-        }
+        $this->db->query($this->db->update('table.contents')->rows(array('viewsNum' => (int)$this->viewsNum+1))->where('cid = ?', $this->cid));
         // 判断是否收藏
         if('post' == $this->type && $this->user->hasLogin()){
-            $this->parameter->isFavorite = $this->widget('Widget_Users_Favorites')->isFavorite('post',$this->cid);
+            $this->isFavorite = $this->widget('Widget_Users_Favorites')->isFavorite('post',$this->cid);
         }
         /** 插件接口 */
         $this->pluginHandle()->singleHandle($this, $select);
@@ -1029,9 +1042,10 @@ class Widget_Archive extends Widget_Abstract_Contents
         
         // modified_by_jiangmuzi 2015.09.22
         /** 设置归档MID*/
+		
         $this->_archiveMid = $category['mid'];
+		$this->_archiveStyle = $category['style'];
         // end modified
-        
         /** 插件接口 */
         $this->pluginHandle()->categoryHandle($this, $select);
     }
@@ -1626,7 +1640,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                     $select = $this->select()->where('table.contents.status = ?', 'publish');
                 }
             }
-            $select->where('table.contents.created < ?', $this->options->gmtTime);
+            $select->where('table.contents.created < ?', $this->options->gmtTime+10);
         }
 
         /** handle初始化 */
@@ -1662,9 +1676,9 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->_countSql = clone $select;
         // modified_by_jiangmuzi 2015.09.24
         $select->order('table.contents.lastComment', Typecho_Db::SORT_DESC)
-        ->order('table.contents.created', Typecho_Db::SORT_DESC)
         ->page($this->_currentPage, $this->parameter->pageSize);
         $this->query($select);
+		
     }
 
     /**
@@ -1770,21 +1784,6 @@ class Widget_Archive extends Widget_Abstract_Contents
         );
 
         return $this->widget('Widget_Comments_Archive', $parameter);
-    }
-
-    /**
-     * 获取回响归档对象 
-     * 
-     * @access public
-     * @return Widget_Comments_Ping
-     */
-    public function pings()
-    {
-        return $this->widget('Widget_Comments_Ping', array(
-            'parentId'      => $this->hidden ? 0 : $this->cid,
-            'parentContent' => $this->row,
-            'allowPing'     =>  $this->allow('ping')
-        ));
     }
 
     /**
@@ -1918,9 +1917,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             'keywords'      =>  htmlspecialchars($this->_keywords),
             'generator'     =>  $this->options->generator,
             'template'      =>  $this->options->theme,
-            'pingback'      =>  '',//$this->options->xmlRpcUrl,
-            'xmlrpc'        =>  '',//$this->options->xmlRpcUrl . '?rsd',
-            'wlw'           =>  '',//$this->options->xmlRpcUrl . '?wlw',
+			'archivestyle'  =>  $this->_archiveStyle,
             'rss2'          =>  $this->_feedUrl,
             'rss1'          =>  $this->_feedRssUrl,
             'antiSpam'      =>  1,
@@ -1954,18 +1951,6 @@ class Widget_Archive extends Widget_Abstract_Contents
             $header .= '<meta name="template" content="' . $allows['template'] . '" />' . "\n";
         }
 
-        if (!empty($allows['pingback'])) {
-            $header .= '<link rel="pingback" href="' . $allows['pingback'] . '" />' . "\n";
-        }
-
-        if (!empty($allows['xmlrpc'])) {
-            $header .= '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="' . $allows['xmlrpc'] . '" />' . "\n";
-        }
-
-        if (!empty($allows['wlw'])) {
-            $header .= '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="' . $allows['wlw'] . '" />' . "\n";
-        }
-
         if (!empty($allows['rss2']) && $allowFeed) {
             $header .= '<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="' . $allows['rss2'] . '" />' . "\n";
         }
@@ -1978,6 +1963,9 @@ class Widget_Archive extends Widget_Abstract_Contents
             $header .= '<link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="' . $allows['atom'] . '" />' . "\n";
         }
         
+		if(!empty($allows['archivestyle'])){
+			$header .='<style type="text/css">'.$allows['archivestyle'].'</style>';
+		}
 
         /** 反垃圾设置 */
         if ($this->options->commentsAntiSpam && $this->is('single')) {
@@ -1985,19 +1973,9 @@ class Widget_Archive extends Widget_Abstract_Contents
                 if (1 == $allows['antiSpam']) {
                     $header .= "<script type=\"text/javascript\">
 (function () {
-    var event = document.addEventListener ? {
-        add: 'addEventListener',
-        focus: 'focus',
-        load: 'DOMContentLoaded'
-    } : {
-        add: 'attachEvent',
-        focus: 'onfocus',
-        load: 'onload'
-    };
-
+    var event = document.addEventListener ? {add: 'addEventListener',focus: 'focus',load: 'DOMContentLoaded'} : {add: 'attachEvent',focus: 'onfocus',load: 'onload'};
     document[event.add](event.load, function () {
         var r = document.getElementById('{$this->respondId}');
-
         if (null != r) {
             var forms = r.getElementsByTagName('form');
             if (forms.length > 0) {
@@ -2027,7 +2005,6 @@ class Widget_Archive extends Widget_Abstract_Contents
                 }
             }
         }
-
         /** 输出header */
         echo $header;
 
@@ -2136,12 +2113,9 @@ class Widget_Archive extends Widget_Abstract_Contents
      */
     public function render()
     {
-        
         /** 处理静态链接跳转 */
         $this->checkPermalink();
 
-        /** 添加Pingback */
-        $this->response->setHeader('X-Pingback', $this->options->xmlRpcUrl);
         $validated = false;
 
         //~ 自定义模板
@@ -2150,7 +2124,7 @@ class Widget_Archive extends Widget_Abstract_Contents
                 $validated = true;
             }
         }
-        
+
         if (!$validated && !empty($this->_archiveType)) {
 
             //~ 首先找具体路径, 比如 category/default.php

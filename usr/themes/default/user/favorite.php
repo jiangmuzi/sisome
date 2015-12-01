@@ -7,7 +7,7 @@
     <div class="box">
         <div class="head">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->getMetaTitle();?>
+            <?php echo $this->getMetaTitle();?>
         </div>
 		<?php if($this->parameter->type=='favorite_posts'):?>
 			<?php if($this->favorites->have()):?>

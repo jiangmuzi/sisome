@@ -17,11 +17,11 @@
             <li><a href="<?php $this->author->ucenter(); ?>"><?php $this->author(); ?></a>&nbsp;·&nbsp;</li>
     		<li><span><?php $this->dateWord(); ?></span>&nbsp;·&nbsp;</li>
     		<li><span><?php $this->viewsNum(); _e('次点击');?></span></li>
-    		<?php if($this->user->hasLogin() && $this->user->uid==$this->author->uid):?>
+    		<?php if($this->user->hasLogin() && $this->user->uid==$this->authorId):?>
     		  <li>&nbsp;·&nbsp;<span><a href="<?php $this->options->index('publish?cid='.$this->cid);?>"><?php _e('编辑');?></a></span></li>
     	   <?php endif;?>
-    	   <?php if($this->user->hasLogin()):?>
-    	       <li>&nbsp;·&nbsp;<a class="add_favorite" <?php if($this->parameter->isFavorite):?>data-fid="<?php $this->parameter->isFavorite();?>"<?php endif;?> data-type="post" data-slug="<?php $this->cid();?>" href="javascript:;"><?php if($this->parameter->isFavorite){_e('取消收藏');}else{_e('加入收藏');}?></a></li>
+    	   <?php if($this->user->hasLogin() && $this->authorId != $this->user->uid):?>
+    	       <li>&nbsp;·&nbsp;<a class="add_favorite" <?php if($this->isFavorite):?>data-fid="<?php $this->isFavorite();?>"<?php endif;?> data-type="post" data-slug="<?php $this->cid();?>" href="javascript:;"><?php if($this->isFavorite){_e('取消收藏');}else{_e('加入收藏');}?></a></li>
     	   <?php endif;?>
     	</ul>
     </div>

@@ -141,8 +141,7 @@ class Widget_Metas_Tag_Edit extends Widget_Abstract_Metas implements Widget_Inte
 		// modified_by_jiangmuzi 2015.09.25
         /** 父级分类 */
         $options = array(0 => _t('不选择'));
-        $parents = $this->widget('Widget_Metas_Category_List@options',
-            (isset($this->request->mid) ? 'ignore=' . $this->request->mid : ''));
+        $parents = $this->widget('Widget_Metas_Category_List@options');
         
         while ($parents->next()) {
             $options[$parents->mid] = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $parents->levels) . $parents->name;
@@ -183,6 +182,7 @@ class Widget_Metas_Tag_Edit extends Widget_Abstract_Metas implements Widget_Inte
 
             $name->value($meta['name']);
             $slug->value($meta['slug']);
+			$parent->value($meta['parent']);
             $do->value('update');
             $mid->value($meta['mid']);
             $submit->value(_t('编辑标签'));

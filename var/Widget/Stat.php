@@ -55,7 +55,19 @@ class Widget_Stat extends Typecho_Widget
         /** 初始化常用组件 */
         $this->user = $this->widget('Widget_User');
     }
-
+	
+	/**
+     * 在线用户数
+     * 
+     * @return integer
+     */
+	protected function ___online(){
+		$options = $this->widget('Widget_Options');
+		return $this->db->fetchObject($this->db->select(array('COUNT(uid)' => 'num'))
+            ->from('table.users')
+			->where('table.users.activated > ?',($options->gmtTime-300)))->num;
+	}
+	
     /**
      * 统计未读消息数
      * 

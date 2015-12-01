@@ -155,7 +155,12 @@ class Widget_Metas_Category_Edit extends Widget_Abstract_Metas implements Widget
         $description =  new Typecho_Widget_Helper_Form_Element_Textarea('description', NULL, NULL,
         _t('分类描述'), _t('此文字用于描述分类, 在有的主题中它会被显示.'));
         $form->addInput($description);
-
+		
+		/** 自定义样式 */
+		$style =  new Typecho_Widget_Helper_Form_Element_Textarea('style', NULL, NULL,
+        _t('自定义样式'), _t('分类自定义样式表.'));
+        $form->addInput($style);
+		
         /** 分类动作 */
         $do = new Typecho_Widget_Helper_Form_Element_Hidden('do');
         $form->addInput($do);
@@ -182,7 +187,7 @@ class Widget_Metas_Category_Edit extends Widget_Abstract_Metas implements Widget
             $name->value($meta['name']);
             $slug->value($meta['slug']);
             $parent->value($meta['parent']);
-            $description->value($meta['description']);
+            $style->value($meta['style']);
             $do->value('update');
             $mid->value($meta['mid']);
             $submit->value(_t('编辑分类'));
@@ -228,7 +233,7 @@ class Widget_Metas_Category_Edit extends Widget_Abstract_Metas implements Widget
         } 
 
         /** 取出数据 */
-        $category = $this->request->from('name', 'slug', 'description', 'parent');
+        $category = $this->request->from('name', 'slug', 'description', 'style', 'parent');
 
         $category['slug'] = Typecho_Common::slugName(empty($category['slug']) ? $category['name'] : $category['slug']);
         $category['type'] = 'category';
@@ -263,7 +268,7 @@ class Widget_Metas_Category_Edit extends Widget_Abstract_Metas implements Widget
         }
 
         /** 取出数据 */
-        $category = $this->request->from('name', 'slug', 'description', 'parent');
+        $category = $this->request->from('name', 'slug', 'description', 'style', 'parent');
         $category['mid'] = $this->request->mid;
         $category['slug'] = Typecho_Common::slugName(empty($category['slug']) ? $category['name'] : $category['slug']);
         $category['type'] = 'category';

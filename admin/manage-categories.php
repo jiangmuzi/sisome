@@ -50,7 +50,9 @@ Typecho_Widget::widget('Widget_Metas_Category_Admin')->to($categories);
                                 <tr class="nodrag">
                                     <th> </th>
                                     <th><?php _e('名称'); ?></th>
+									<?php if(!$categories->parent):?>
                                     <th><?php _e('子分类'); ?></th>
+									<?php endif;?>
                                     <th><?php _e('缩略名'); ?></th>
                                     <th> </th>
                                     <th><?php _e('文章数'); ?></th>
@@ -64,14 +66,15 @@ Typecho_Widget::widget('Widget_Metas_Category_Admin')->to($categories);
                                     <td><a href="<?php $options->adminUrl('category.php?mid=' . $categories->mid); ?>"><?php $categories->name(); ?></a> 
                                     <a href="<?php $categories->permalink(); ?>" title="<?php _e('浏览 %s', $categories->name); ?>"><i class="i-exlink"></i></a>
                                     </td>
+									<?php if(!$categories->parent):?>
                                     <td>
-                                    
                                     <?php if (count($categories->children) > 0): ?>
                                     <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>"><?php echo _n('一个分类', '%d个分类', count($categories->children)); ?></a>
                                     <?php else: ?>
                                     <a href="<?php $options->adminUrl('category.php?parent=' . $categories->mid); ?>"><?php echo _e('新增'); ?></a>
                                     <?php endif; ?>
                                     </td>
+									<?php endif;?>
                                     <td><?php $categories->slug(); ?></td>
                                     <td>
                                     <?php if ($options->defaultCategory == $categories->mid): ?>

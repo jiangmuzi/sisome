@@ -104,8 +104,6 @@ Typecho_Widget::widget('Widget_Contents_Page_Edit')->to($page);
                                 <ul>
                                     <li><input id="allowComment" name="allowComment" type="checkbox" value="1" <?php if($page->allow('comment')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowComment"><?php _e('允许评论'); ?></label></li>
-                                    <li><input id="allowPing" name="allowPing" type="checkbox" value="1" <?php if($page->allow('ping')): ?>checked="true"<?php endif; ?> />
-                                    <label for="allowPing"><?php _e('允许被引用'); ?></label></li>
                                     <li><input id="allowFeed" name="allowFeed" type="checkbox" value="1" <?php if($page->allow('feed')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowFeed"><?php _e('允许在聚合中出现'); ?></label></li>
                                 </ul>

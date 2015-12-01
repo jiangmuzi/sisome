@@ -11,7 +11,7 @@
     <div class="box">
         <div class="head">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->getMetaTitle();?>
+            <?php echo $this->getMetaTitle();?>
         </div>
 		<div class="cell">
 		  <p><?php _e('谢谢，你的电子邮件地址已经成功激活。现在可以发布主题了');?></p>

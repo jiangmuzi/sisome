@@ -113,7 +113,6 @@ include 'common-js.php';
 ?>
 
 <script>
-/*
 $(document).ready(function () {
     var ul = $('#typecho-message ul'), cache = window.sessionStorage,
         html = cache ? cache.getItem('feed') : '',
@@ -154,7 +153,7 @@ $(document).ready(function () {
             cache.setItem('update', resp.responseText);
         }, 'json');
     }
-});*/
+});
 
 </script>
 <?php include 'footer.php'; ?>

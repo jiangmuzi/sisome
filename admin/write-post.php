@@ -124,17 +124,9 @@ Typecho_Widget::widget('Widget_Contents_Post_Edit')->to($post);
                                 <ul>
                                     <li><input id="allowComment" name="allowComment" type="checkbox" value="1" <?php if($post->allow('comment')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowComment"><?php _e('允许评论'); ?></label></li>
-                                    <li><input id="allowPing" name="allowPing" type="checkbox" value="1" <?php if($post->allow('ping')): ?>checked="true"<?php endif; ?> />
-                                    <label for="allowPing"><?php _e('允许被引用'); ?></label></li>
                                     <li><input id="allowFeed" name="allowFeed" type="checkbox" value="1" <?php if($post->allow('feed')): ?>checked="true"<?php endif; ?> />
                                     <label for="allowFeed"><?php _e('允许在聚合中出现'); ?></label></li>
                                 </ul>
-                            </section>
-                            
-                            <section class="typecho-post-option">
-                                <label for="trackback" class="typecho-label"><?php _e('引用通告'); ?></label>
-                                <p><textarea id="trackback" class="w-100 mono" name="trackback" rows="2"></textarea></p>
-                                <p class="description"><?php _e('每一行一个引用地址, 用回车隔开'); ?></p>
                             </section>
 
                             <?php Typecho_Plugin::factory('admin/write-post.php')->advanceOption($post); ?>

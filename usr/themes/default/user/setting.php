@@ -8,7 +8,7 @@
         <div class="box">
             <div class="head">
                 <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-                <?php $this->getMetaTitle();?>
+                <?php echo $this->getMetaTitle();?>
             </div>
     		<div class="cell">
     		  <form class="form" method="POST" action="<?php $this->options->someAction('setting');?>">

@@ -68,8 +68,7 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
      */
     public function writePage()
     {
-        $contents = $this->request->from('text', 'template', 'allowComment',
-            'allowPing', 'allowFeed', 'slug', 'order', 'visibility');
+        $contents = $this->request->from('text', 'template', 'allowComment', 'allowFeed', 'slug', 'order', 'visibility');
 
         $contents['title'] = $this->request->get('title', _t('未命名页面'));
         $contents['created'] = $this->getCreated();
@@ -88,9 +87,6 @@ class Widget_Contents_Page_Edit extends Widget_Contents_Post_Edit implements Wid
 
             // 完成发布插件接口
             $this->pluginHandle()->finishPublish($contents, $this);
-
-            /** 发送ping */
-            $this->widget('Widget_Service')->sendPing($this->cid);
 
             /** 设置提示信息 */
             $this->widget('Widget_Notice')->set(_t('页面 "<a href="%s">%s</a>" 已经发布', $this->permalink, $this->title), 'success');

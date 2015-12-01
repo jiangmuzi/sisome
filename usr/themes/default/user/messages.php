@@ -15,7 +15,7 @@
     <div class="box">
         <div class="head">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->getMetaTitle();?>
+            <?php echo $this->getMetaTitle();?>
         </div>
         <?php if($this->messages->have()):?>
         <?php while ($this->messages->next()):?>
@@ -26,7 +26,7 @@
                 <a href="<?php $this->messages->permalink();?>" target="_blank"><?php $this->messages->title();?></a>
                 </div>
 				<div class="cell">
-				<?php $messages->content();?>
+				<?php $this->messages->content();?>
                 </div>
             <?php endif;?>
 			<?php if($this->messages->type=='at'):?>

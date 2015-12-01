@@ -64,21 +64,14 @@
         <textarea class="content" maxlength="20000" id="topic_content" name="text"><?php $this->text();?></textarea>
     </div>
     <div class="cell p0">
-        <input class="tags" id="tagsInput" type="text" name="tags" value="<?php $this->tags(',',false); if(!empty($this->currentTag) && $this->currentTag['parent']!=0){echo $this->currentTag['name'];}?>" placeholder="请输入主题标签">
+        <input class="tags" id="tagsInput" type="text" name="tags" value="<?php $this->tags(',',false);?>" placeholder="请输入主题标签">
     </div>
     <div class="cell">
-    <?php Typecho_Widget::widget('Widget_Metas_Category_List')->to($categories); ?>
         <select id="topic-node" class="topic-select-btn" name="category">
             <option value="0"><?php _e('请选择一个节点');?></option>
-            <?php if($categories->have()):?>
-                <?php while ($categories->next()):?>
-                <option value="<?php $categories->mid();?>" ><?php $categories->name();_e(' / ');$categories->slug();?></option>
-                <?php endwhile; ?>
-            <?php endif; ?>
+            <?php Typecho_Widget::widget('Widget_Metas_Category_List')->listNodes(
+				array('node'=>'<option value="{mid}">{name}</option>','cateBefore'=>'<optgroup label="{name}">','cateAfter'=>'</optgroup>')); ?>
         </select>
-    </div>
-    <div class="cell">
-        <div id="topic-hot-tags"></div>
     </div>
     <div class="cell">
         <button class="btn" type="button" onclick="prevTopic();" ><i class="fa fa-eye"></i> <?php _e('预览主题');?></button>

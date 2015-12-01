@@ -6,7 +6,7 @@
 	<div class="head"><?php $this->commentsNum(_t('%d 条回复')); ?>
 	</div>
     
-    <?php $comments->listComments('before=&after='); ?>
+    <?php $comments->listComments(); ?>
     <div class="inner">
     <?php $comments->pageNav('&laquo;', '&raquo;'); ?>
     </div>

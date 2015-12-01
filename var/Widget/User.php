@@ -204,7 +204,6 @@ class Widget_User extends Typecho_Widget
         if ($logoutPluggable) {
             return;
         }
-
         Typecho_Cookie::delete('__some_uid');
         Typecho_Cookie::delete('__some_authCode');
     }

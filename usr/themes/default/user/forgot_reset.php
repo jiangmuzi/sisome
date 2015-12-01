@@ -8,7 +8,7 @@
     <div class="head">
         <div class="location">
             <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-            <?php $this->getMetaTitle();?>
+            <?php echo $this->getMetaTitle();?>
         </div>
     </div>
     <div class="cell">

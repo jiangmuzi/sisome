@@ -18,7 +18,7 @@
 	
     <section class="box">
         <div class="head"><span class="fade"><?php _e('最新回复'); ?></span><div class="fr"></div></div>
-        <?php $this->widget('Widget_Comments_List@newReplys')->to($newReplys); ?>
+        <?php $this->widget('Widget_Comments_List@newReplys','pageSize='.$this->options->commentsListSize)->to($newReplys); ?>
         <div id="lastCommentList">
         <?php while($newReplys->next()): ?>
             <div class="cell">
@@ -35,5 +35,6 @@
 		<div class="cell">注册会员：<?php $stat->usersNum();?></div>
 		<div class="cell">主题：<?php $stat->publishedPostsNum();?></div>
 		<div class="cell"> 回复：<?php $stat->publishedCommentsNum();?></div>
+		<div class="cell"> 在线：<?php $stat->online();?></div>
     </section>
 </div><!-- end #sidebar -->

@@ -47,47 +47,20 @@ class Widget_Options_Discussion extends Widget_Abstract_Options implements Widge
         $form->addInput($commentsListSize->addRule('isInteger', _t('请填入一个数字')));
 
         $commentsShowOptions = array(
-            'commentsShowCommentOnly'   =>  _t('仅显示评论, 不显示 Pingback 和 Trackback'),
             'commentsMarkdown'      =>  _t('在评论中使用 Markdown 语法'),
-            'commentsShowUrl'       =>  _t('评论者名称显示时自动加上其个人主页链接'),
-            'commentsUrlNofollow'   =>  _t('对评论者个人主页链接使用 <a href="http://en.wikipedia.org/wiki/Nofollow">nofollow 属性</a>'),
-            'commentsAvatar'        =>  _t('启用 <a href="http://gravatar.com">Gravatar</a> 头像服务, 最高显示评级为 %s 的头像',
-            '</label><select id="commentsShow-commentsAvatarRating" name="commentsAvatarRating">
-            <option value="G"' . ('G' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>G - 普通</option>
-            <option value="PG"' . ('PG' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>PG - 13岁以上</option>
-            <option value="R"' . ('R' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>R - 17岁以上成人</option>
-            <option value="X"' . ('X' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>X - 限制级</option></select>
-            <label for="commentsShow-commentsAvatarRating">'),
-            'commentsPageBreak'     =>  _t('启用分页, 并且每页显示 %s 篇评论, 在列出时将 %s 作为默认显示',
+            'commentsAvatar'        =>  _t('评论列表显示头像'),
+            'commentsPageBreak'     =>  _t('启用分页, 并且每页显示 %s 篇评论 %s 作为默认显示',
             '</label><input type="text" value="' . $this->options->commentsPageSize
             . '" class="text num text-s" id="commentsShow-commentsPageSize" name="commentsPageSize" /><label for="commentsShow-commentsPageSize">',
-            '</label><select id="commentsShow-commentsPageDisplay" name="commentsPageDisplay">
-            <option value="first"' . ('first' == $this->options->commentsPageDisplay ? ' selected="true"' : '') . '>' . _t('第一页') . '</option>
-            <option value="last"' . ('last' == $this->options->commentsPageDisplay ? ' selected="true"' : '') . '>' . _t('最后一页') . '</option></select>'
-            . '<label for="commentsShow-commentsPageDisplay">'),
-            'commentsThreaded'      =>  _t('启用评论回复, 以 %s 层作为每个评论最多的回复层数',
-            '</label><input name="commentsMaxNestingLevels" type="text" class="text num text-s" value="' . $this->options->commentsMaxNestingLevels . '" id="commentsShow-commentsMaxNestingLevels" />
-            <label for="commentsShow-commentsMaxNestingLevels">') . '</label></span><span class="multiline">'
-            . _t('将 %s 的评论显示在前面', '<select id="commentsShow-commentsOrder" name="commentsOrder">
+            '</label><select id="commentsShow-commentsOrder" name="commentsOrder">
             <option value="DESC"' . ('DESC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('较新的') . '</option>
-            <option value="ASC"' . ('ASC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('较旧的') . '</option></select><label for="commentsShow-commentsOrder">')
+            <option value="ASC"' . ('ASC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('较旧的') . '</option></select><label for="commentsShow-commentsOrder">'),
         );
 
         $commentsShowOptionsValue = array();
-        if ($this->options->commentsShowCommentOnly) {
-            $commentsShowOptionsValue[] = 'commentsShowCommentOnly';
-        }
 
         if ($this->options->commentsMarkdown) {
             $commentsShowOptionsValue[] = 'commentsMarkdown';
-        }
-
-        if ($this->options->commentsShowUrl) {
-            $commentsShowOptionsValue[] = 'commentsShowUrl';
-        }
-
-        if ($this->options->commentsUrlNofollow) {
-            $commentsShowOptionsValue[] = 'commentsUrlNofollow';
         }
         
         if ($this->options->commentsAvatar) {
@@ -110,11 +83,9 @@ class Widget_Options_Discussion extends Widget_Abstract_Options implements Widge
         $commentsPostOptions = array(
             'commentsRequireModeration'     =>  _t('所有评论必须经过审核'),
             'commentsWhitelist'     =>  _t('评论者之前须有评论通过了审核'),
-            'commentsRequireMail'           =>  _t('必须填写邮箱'),
-            'commentsRequireURL'            =>  _t('必须填写网址'),
             'commentsCheckReferer'          =>  _t('检查评论来源页 URL 是否与文章链接一致'),
             'commentsAntiSpam'              =>  _t('开启反垃圾保护'),
-            'commentsAutoClose'             =>  _t('在文章发布 %s 天以后自动关闭评论',
+            'commentsAutoClose'             =>  _t('在主题发布 %s 天以后自动关闭评论',
             '</label><input name="commentsPostTimeout" type="text" class="text num text-s" value="' . intval($this->options->commentsPostTimeout / (24 * 3600)) . '" id="commentsPost-commentsPostTimeout" />
             <label for="commentsPost-commentsPostTimeout">'),
             'commentsPostIntervalEnable'    =>  _t('同一 IP 发布评论的时间间隔限制为 %s 分钟',
@@ -129,14 +100,6 @@ class Widget_Options_Discussion extends Widget_Abstract_Options implements Widge
 
         if ($this->options->commentsWhitelist) {
             $commentsPostOptionsValue[] = 'commentsWhitelist';
-        }
-
-        if ($this->options->commentsRequireMail) {
-            $commentsPostOptionsValue[] = 'commentsRequireMail';
-        }
-
-        if ($this->options->commentsRequireURL) {
-            $commentsPostOptionsValue[] = 'commentsRequireURL';
         }
 
         if ($this->options->commentsCheckReferer) {

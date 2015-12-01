@@ -115,16 +115,12 @@ class Widget_Users_Profile extends Widget_Users_Edit implements Widget_Interface
             $allow[] = 'comment';
         }
 
-        if ($this->options->defaultAllowPing) {
-            $allow[] = 'ping';
-        }
-
         if ($this->options->defaultAllowFeed) {
             $allow[] = 'feed';
         }
 
         $defaultAllow = new Typecho_Widget_Helper_Form_Element_Checkbox('defaultAllow',
-        array('comment' => _t('可以被评论'), 'ping' => _t('可以被引用'), 'feed' => _t('出现在聚合中')),
+        array('comment' => _t('可以被评论'), 'feed' => _t('出现在聚合中')),
         $allow, _t('默认允许'), _t('设置你经常使用的默认允许权限'));
         $form->addInput($defaultAllow);
 
@@ -280,7 +276,6 @@ class Widget_Users_Profile extends Widget_Users_Edit implements Widget_Interface
         $defaultAllow = $this->request->getArray('defaultAllow');
 
         $settings['defaultAllowComment'] = in_array('comment', $defaultAllow) ? 1 : 0;
-        $settings['defaultAllowPing'] = in_array('ping', $defaultAllow) ? 1 : 0;
         $settings['defaultAllowFeed'] = in_array('feed', $defaultAllow) ? 1 : 0;
 
         foreach ($settings as $name => $value) {

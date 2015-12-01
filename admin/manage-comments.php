@@ -104,9 +104,6 @@ $isAllComments = ('on' == $request->get('__some_all_comments') || 'on' == Typech
                         <?php while($comments->next()): ?>
                         <tr id="<?php $comments->theId(); ?>" data-comment="<?php
                         $comment = array(
-                            'author'    =>  $comments->author,
-                            'mail'      =>  $comments->mail,
-                            'url'       =>  $comments->url,
                             'ip'        =>  $comments->ip,
                             'type'        =>  $comments->type,
                             'text'      =>  $comments->text
@@ -120,7 +117,7 @@ $isAllComments = ('on' == $request->get('__some_all_comments') || 'on' == Typech
                             <td valign="top">
                                 <div class="comment-avatar">
                                     <?php if ('comment' == $comments->type): ?>
-                                    <?php $comments->gravatar(40); ?>
+                                    <?php $comments->poster->avatar(40); ?>
                                     <?php endif; ?>
                                     <?php if ('comment' != $comments->type): ?>
                                     <?php _e('引用'); ?>
@@ -129,10 +126,7 @@ $isAllComments = ('on' == $request->get('__some_all_comments') || 'on' == Typech
                             </td>
                             <td valign="top" class="comment-head">
                                 <div class="comment-meta">
-                                    <strong class="comment-author"><?php $comments->author(true); ?></strong>
-                                    <?php if($comments->mail): ?>
-                                    <br /><span><a href="mailto:<?php $comments->mail(); ?>"><?php $comments->mail(); ?></a></span>
-                                    <?php endif; ?>
+                                    <strong class="comment-author"><a href="<?php $comments->poster->ucenter(); ?>" target="_blank"><?php $comments->poster->screenName(); ?></a></strong>
                                     <?php if($comments->ip): ?>
                                     <br /><span><?php $comments->ip(); ?></span>
                                     <?php endif; ?>
@@ -163,12 +157,8 @@ $isAllComments = ('on' == $request->get('__some_all_comments') || 'on' == Typech
                                     <?php endif; ?>
                                     
                                     <a href="#<?php $comments->theId(); ?>" rel="<?php $security->index('/action/comments-edit?do=edit&coid=' . $comments->coid); ?>" class="operate-edit"><?php _e('编辑'); ?></a>
-
-                                    <?php if('approved' == $comments->status && 'comment' == $comments->type): ?>
-                                    <a href="#<?php $comments->theId(); ?>" rel="<?php $security->index('/action/comments-edit?do=reply&coid=' . $comments->coid); ?>" class="operate-reply"><?php _e('回复'); ?></a>
-                                    <?php endif; ?>
                                     
-                                    <a lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($comments->author)); ?>" href="<?php $security->index('/action/comments-edit?do=delete&coid=' . $comments->coid); ?>" class="operate-delete"><?php _e('删除'); ?></a>
+                                    <a lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($comments->poster->screenName)); ?>" href="<?php $security->index('/action/comments-edit?do=delete&coid=' . $comments->coid); ?>" class="operate-delete"><?php _e('删除'); ?></a>
                                 </div>
                             </td>
                         </tr>
@@ -258,55 +248,13 @@ $(document).ready(function () {
         return false;
     });
 
-    $('.operate-reply').click(function () {
-        var td = $(this).parents('td'), t = $(this);
-
-        if ($('.comment-reply', td).length > 0) {
-            $('.comment-reply').remove();
-        } else {
-            var form = $('<form method="post" action="'
-                + t.attr('rel') + '" class="comment-reply">'
-                + '<p><label for="text" class="sr-only"><?php _e('内容'); ?></label><textarea id="text" name="text" class="w-90 mono" rows="3"></textarea></p>'
-                + '<p><button type="submit" class="btn btn-s primary"><?php _e('回复'); ?></button> <button type="button" class="btn btn-s cancel"><?php _e('取消'); ?></button></p>'
-                + '</form>').insertBefore($('.comment-action', td));
-
-            $('.cancel', form).click(function () {
-                $(this).parents('.comment-reply').remove();
-            });
-
-            var textarea = $('textarea', form).focus();
-
-            form.submit(function () {
-                var t = $(this), tr = t.parents('tr'), 
-                    reply = $('<div class="comment-reply-content"></div>').insertAfter($('.comment-content', tr));
-                
-                reply.html('<p>' + textarea.val() + '</p>');
-                $.post(t.attr('action'), t.serialize(), function (o) {
-                    reply.html(o.comment.content)
-                        .effect('highlight');
-                }, 'json');
-
-                t.remove();
-                return false;
-            });
-        }
-
-        return false;
-    });
 
     $('.operate-edit').click(function () {
         var tr = $(this).parents('tr'), t = $(this), id = tr.attr('id'), comment = tr.data('comment');
         tr.hide();
 
         var edit = $('<tr class="comment-edit"><td> </td>'
-                        + '<td colspan="2" valign="top"><form method="post" action="'
-                        + t.attr('rel') + '" class="comment-edit-info">'
-                        + '<p><label for="' + id + '-author"><?php _e('用户名'); ?></label><input class="text-s w-100" id="'
-                        + id + '-author" name="author" type="text"></p>'
-                        + '<p><label for="' + id + '-mail"><?php _e('电子邮箱'); ?></label>'
-                        + '<input class="text-s w-100" type="email" name="mail" id="' + id + '-mail"></p>'
-                        + '<p><label for="' + id + '-url"><?php _e('个人主页'); ?></label>'
-                        + '<input class="text-s w-100" type="text" name="url" id="' + id + '-url"></p></form></td>'
+                        + '<td colspan="2" valign="top"></td>'
                         + '<td valign="top"><form method="post" action="'
                         + t.attr('rel') + '" class="comment-edit-content"><p><label for="' + id + '-text"><?php _e('内容'); ?></label>'
                         + '<textarea name="text" id="' + id + '-text" rows="6" class="w-90 mono"></textarea></p>'
@@ -314,9 +262,6 @@ $(document).ready(function () {
                         + '<button type="button" class="btn btn-s cancel"><?php _e('取消'); ?></button></p></form></td></tr>')
                         .data('id', id).data('comment', comment).insertAfter(tr);
 
-        $('input[name=author]', edit).val(comment.author);
-        $('input[name=mail]', edit).val(comment.mail);
-        $('input[name=url]', edit).val(comment.url);
         $('textarea[name=text]', edit).val(comment.text).focus();
 
         $('.cancel', edit).click(function () {
@@ -340,16 +285,6 @@ $(document).ready(function () {
                 }
             });
 
-            var html = '<strong class="comment-author">'
-                + (comment.url ? '<a target="_blank" href="' + comment.url + '">'
-                + comment.author + '</a>' : comment.author) + '</strong>'
-                + ('comment' != comment.type ? '<small><?php _e('引用'); ?></small>' : '')
-                + (comment.mail ? '<br /><span><a href="mailto:' + comment.mail + '">'
-                + comment.mail + '</a></span>' : '')
-                + (comment.ip ? '<br /><span>' + comment.ip + '</span>' : '');
-
-            $('.comment-meta', oldTr).html(html)
-                .effect('highlight');
             $('.comment-content', oldTr).html('<p>' + comment.text + '</p>');
             oldTr.data('comment', comment);
 

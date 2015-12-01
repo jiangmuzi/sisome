@@ -60,15 +60,15 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     			<h2 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
     			<ul class="post-meta">
 					<?php if($this->category):?>
-						<li><?php $this->category(','); ?>&nbsp;•&nbsp;</li>
+						<li><?php $this->category(','); ?>&nbsp;&bull;&nbsp;</li>
 					<?php else:?>
-						<li><?php $this->tags(','); ?>&nbsp;•&nbsp;</li>
+						<li><?php $this->tags(','); ?>&nbsp;&bull;&nbsp;</li>
 					<?php endif;?>
                     
-                    <li><a href="<?php $this->author->ucenter(); ?>"><?php $this->author->name(); ?></a>&nbsp;•&nbsp;</li>
-    				<li><span><?php $this->dateWord(); ?></span></li>
+                    <li><strong><a href="<?php $this->author->ucenter(); ?>"><?php $this->author->name(); ?></a><strong>&nbsp;&bull;&nbsp;</li>
+    				<li><span><?php $this->lastWord(); ?></span></li>
 					<?php if($this->lastUid):?>
-					<li>&nbsp;•&nbsp;最后回复来自：<strong><a href="<?php $this->lastAuthor->ucenter();?>"><?php $this->lastAuthor->name();?></a></strong></li>
+					<li>&nbsp;&bull;&nbsp;最后回复来自：<strong><a href="<?php $this->lastAuthor->ucenter();?>"><?php $this->lastAuthor->name();?></a></strong></li>
 					<?php endif;?>
     			</ul>
     			<div class="post-reply"><a href="<?php $this->permalink() ?>"><?php $this->commentsNum('%d'); ?></a></div>

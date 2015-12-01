@@ -530,10 +530,7 @@ h1.post-title{
 h2.post-title{
 	margin:0;
 	font-weight:400;
-}
-h2.post-title a{
-	display:block;
-	padding-right:40px;
+	padding-right:60px;
 }
 .post-title a{
 	font-size: 16px;
@@ -562,6 +559,9 @@ h2.post-title a{
 .post-meta a{
 	color:#ccc;
 	font-size:12px;
+}
+.post-meta strong a{
+	color:#778087;
 }
 .post-reply{
 	position:absolute;
@@ -684,7 +684,16 @@ a.credits-area:hover{
 #comments .cell{
 	overflow:hidden;
 }
-
+#comments .no{
+	font-size:10px;
+	font-weight: 500;
+	border-radius: 10px;
+	display: inline-block;
+	background-color: #F0F0F0;
+	color: #CCC;
+	padding: 2px 5px 2px 5px;
+	margin-left:5px;
+}
 #comments .reply-level-0 .cell{
 	padding-left:20px;
 }
@@ -706,6 +715,9 @@ a.credits-area:hover{
 }
 .reply-time{
 	margin:0 5px;
+}
+.reply-waiting{
+	color:#f50;
 }
 .reply-content{
 	margin-top:5px;
@@ -991,4 +1003,29 @@ form .field label{
 #footer .foot-nav a{
 	font-weight:700;
 	margin:0 5px;
+}
+@media (max-width: 970px) {
+	.wp{
+		width:100%;
+		padding: 0 10px;
+		box-sizing: border-box;
+	}
+}
+@media (max-width: 768px) {
+	#main{
+		width:100%;
+		margin:0;
+	}
+	#sidebar{
+		display:none;
+	}
+	.top-srh{
+		width:150px;
+	}
+}
+
+@media (max-width: 480px) {
+	.top-srh{
+		display:none;
+	}
 }

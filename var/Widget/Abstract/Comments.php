@@ -54,21 +54,8 @@ class Widget_Abstract_Comments extends Widget_Abstract
         if ($this->options->commentsPageBreak && 'approved' == $this->status) {
             
             $coid = $this->coid;
-            $parent = $this->parent;
-            
-            while ($parent > 0 && $this->options->commentsThreaded) {
-                $parentRows = $this->db->fetchRow($this->db->select('parent')->from('table.comments')
-                ->where('coid = ? AND status = ?', $parent, 'approved')->limit(1));
-                
-                if (!empty($parentRows)) {
-                    $coid = $parent;
-                    $parent = $parentRows['parent'];
-                } else {
-                    break;
-                }
-            }
 
-            $select  = $this->db->select('coid', 'parent')
+            $select  = $this->db->select('coid')
             ->from('table.comments')->where('cid = ? AND status = ?', $this->parentContent['cid'], 'approved')
             ->where('coid ' . ('DESC' == $this->options->commentsOrder ? '>=' : '<=') . ' ?', $coid)
             ->order('coid', Typecho_Db::SORT_ASC);
@@ -79,16 +66,8 @@ class Widget_Abstract_Comments extends Widget_Abstract
             
             $comments = $this->db->fetchAll($select);
             
-            $commentsMap = array();
-            $total = 0;
-            
-            foreach ($comments as $comment) {
-                $commentsMap[$comment['coid']] = $comment['parent'];
-                
-                if (0 == $comment['parent'] || !isset($commentsMap[$comment['parent']])) {
-                    $total ++;
-                }
-            }
+            $total = count($comments);
+           
 
             $currentPage = ceil($total / $this->options->commentsPageSize);
             
@@ -150,8 +129,8 @@ class Widget_Abstract_Comments extends Widget_Abstract
      */
     public function select()
     {
-        return $this->db->select('table.comments.coid', 'table.comments.cid', 'table.comments.author', 'table.comments.mail', 'table.comments.url', 'table.comments.ip',
-        'table.comments.authorId', 'table.comments.ownerId', 'table.comments.agent', 'table.comments.text', 'table.comments.type', 'table.comments.status', 'table.comments.parent', 'table.comments.created')
+        return $this->db->select('table.comments.coid', 'table.comments.cid', 'table.comments.ip',
+        'table.comments.authorId', 'table.comments.ownerId', 'table.comments.agent', 'table.comments.text', 'table.comments.type', 'table.comments.status', 'table.comments.created')
         ->from('table.comments');
     }
 
@@ -168,17 +147,13 @@ class Widget_Abstract_Comments extends Widget_Abstract
         $insertStruct = array(
             'cid'       =>  $comment['cid'],
             'created'   =>  empty($comment['created']) ? $this->options->gmtTime : $comment['created'],
-            'author'    =>  empty($comment['author']) ? NULL : $comment['author'],
             'authorId'  =>  empty($comment['authorId']) ? 0 : $comment['authorId'],
             'ownerId'   =>  empty($comment['ownerId']) ? 0 : $comment['ownerId'],
-            'mail'      =>  empty($comment['mail']) ? NULL : $comment['mail'],
-            'url'       =>  empty($comment['url']) ? NULL : $comment['url'],
             'ip'        =>  empty($comment['ip']) ? $this->request->getIp() : $comment['ip'],
             'agent'     =>  empty($comment['agent']) ? $_SERVER["HTTP_USER_AGENT"] : $comment['agent'],
             'text'      =>  empty($comment['text']) ? NULL : $comment['text'],
             'type'      =>  empty($comment['type']) ? 'comment' : $comment['type'],
             'status'    =>  empty($comment['status']) ? 'approved' : $comment['status'],
-            'parent'    =>  empty($comment['parent']) ? 0 : $comment['parent'],
         );
 
         if (!empty($comment['coid'])) {
@@ -220,9 +195,6 @@ class Widget_Abstract_Comments extends Widget_Abstract
 
         /** 构建插入结构 */
         $preUpdateStruct = array(
-            'author'    =>  empty($comment['author']) ? NULL : $comment['author'],
-            'mail'      =>  empty($comment['mail']) ? NULL : $comment['mail'],
-            'url'       =>  empty($comment['url']) ? NULL : $comment['url'],
             'text'      =>  empty($comment['text']) ? NULL : $comment['text'],
             'status'    =>  empty($comment['status']) ? 'approved' : $comment['status'],
         );

@@ -43,7 +43,8 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
      * @access private
      */
     private $_categoryOptions = NULL;
-
+	
+	private $_nodeOptions = NULL;
     /**
      * 顶层分类
      * 
@@ -106,7 +107,6 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
         if ($this->parameter->ignore) {
             $select->where('mid <> ?', $this->parameter->ignore);
         }
-
         $categories = $this->db->fetchAll($select->order('table.metas.order', Typecho_Db::SORT_ASC));
         foreach ($categories as $category) {
             $category['levels'] = 0;
@@ -313,6 +313,69 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
         }
     }
 
+	public function listNodes($nodeOptions = NULL){
+		$this->_nodeOptions = Typecho_Config::factory($nodeOptions);
+		$this->_nodeOptions->setDefault(array(
+            'node'           	=>  '<a href="{permalink}">{name}</a>',
+            'cate'         		=>  '',
+			'cateBefore'        =>  '',
+			'cateAfter'         =>  '',
+			'isBefore'			=>  0,
+        ));
+		$this->stack = $this->getCategories($this->_top);
+		if ($this->have()) { 
+			while ($this->next()) {
+				$this->treeViewNodesCallback();
+			}
+		}
+		$this->stack = $this->_map;
+	}
+	public function treeViewNodes(){
+		$children = $this->children;
+        if ($children) {
+            //缓存变量便于还原
+            $tmp = $this->row;
+            $this->sequence ++;
+
+            //在子评论之前输出
+			if($this->_nodeOptions->isBefore){
+				if($this->_nodeOptions->cate)
+					$this->parseNodes($this->_nodeOptions->cate);
+			
+				if($this->_nodeOptions->cateBefore)
+					$this->parseNodes($this->_nodeOptions->cateBefore);
+			}else{
+				if($this->_nodeOptions->cateBefore)
+					$this->parseNodes($this->_nodeOptions->cateBefore);
+				
+				if($this->_nodeOptions->cate)
+					$this->parseNodes($this->_nodeOptions->cate);
+			}
+
+            foreach ($children as $child) {
+                $this->row = $child;
+                $this->treeViewNodesCallback();
+                $this->row = $tmp;
+            }
+            //在子评论之后输出
+			if($this->_nodeOptions->cateAfter)
+				$this->parseNodes($this->_nodeOptions->cateAfter);
+
+            $this->sequence --;
+        }
+	}
+	public function treeViewNodesCallback(){
+		if($this->children){
+			$this->treeViewNodes();
+		}else{
+			if($this->_nodeOptions->node)
+				$this->parseNodes($this->_nodeOptions->node);
+		}
+	}
+	public function parseNodes($format){
+		echo preg_replace_callback("/\{([_a-z0-9]+)\}/i", 
+                array($this, '__parseCallback'), $format);
+	}
     /**
      * 根据深度余数输出
      *

@@ -90,7 +90,28 @@ class Widget_Abstract_Metas extends Widget_Abstract
     {
         return $this->db->fetchObject($condition->select(array('COUNT(mid)' => 'num'))->from('table.metas'))->num;
     }
+	/**
+     * 获取当前所有自定义模板
+     *
+     * @access public
+     * @return array
+     */
+    public function getTemplates()
+    {
+        $files = glob($this->options->themeFile($this->options->theme.'/category', '*.php'));
+        $result = array();
 
+        foreach ($files as $file) {
+            $info = Typecho_Plugin::parseInfo($file);
+            $file = basename($file);
+
+            if ('index.php' != $file && 'custom' == $info['title']) {
+                $result[$file] = $info['description'];
+            }
+        }
+
+        return $result;
+    }
     /**
      * 通用过滤器
      *

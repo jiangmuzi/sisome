@@ -6,12 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title><?php $this->getMetaTitle(' - ');$this->options->title(); ?></title>
+    <title><?php echo $this->getMetaTitle(' - ');$this->options->title(); ?></title>
 
     <!-- 使用url函数转换相关路径 -->
     <link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/style.css'); ?>">
-
     <!--[if lt IE 9]>
     <script src="//cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="//cdn.staticfile.org/respond.js/1.3.0/respond.min.js"></script>

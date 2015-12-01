@@ -120,16 +120,15 @@ class Widget_Menu extends Typecho_Widget
             array(_t('欢迎'), _t('欢迎使用'), 'welcome.php', 'subscriber', true)
         ),
         array(
-            array(_t('撰写文章'), _t('撰写新文章'), 'write-post.php', 'contributor'),
+            array(_t('撰写主题'), _t('撰写新主题'), 'write-post.php', 'contributor'),
             array(array('Widget_Contents_Post_Edit', 'getMenuTitle'), array('Widget_Contents_Post_Edit', 'getMenuTitle'), 'write-post.php?cid=', 'contributor', true),
             array(_t('创建页面'), _t('创建新页面'), 'write-page.php', 'editor'),
             array(array('Widget_Contents_Page_Edit', 'getMenuTitle'), array('Widget_Contents_Page_Edit', 'getMenuTitle'), 'write-page.php?cid=', 'editor', true),
         ),
         array(
-            array(_t('文章'), _t('管理文章'), 'manage-posts.php', 'contributor', false, 'write-post.php'),
+            array(_t('主题'), _t('管理主题'), 'manage-posts.php', 'contributor', false, 'write-post.php'),
             array(array('Widget_Contents_Post_Admin', 'getMenuTitle'), array('Widget_Contents_Post_Admin', 'getMenuTitle'), 'manage-posts.php?uid=', 'contributor', true),
-            array(_t('独立页面'), _t('管理独立页面'), 'manage-pages.php', 'editor', false, 'write-page.php'),
-            array(_t('评论'), _t('管理评论'), 'manage-comments.php', 'contributor'),
+            array(_t('回复'), _t('管理回复'), 'manage-comments.php', 'contributor'),
             array(array('Widget_Comments_Admin', 'getMenuTitle'), array('Widget_Comments_Admin', 'getMenuTitle'), 'manage-comments.php?cid=', 'contributor', true),
             array(_t('分类'), _t('管理分类'), 'manage-categories.php', 'editor', false, 'category.php'),
             array(_t('新增分类'), _t('新增分类'), 'category.php', 'editor', true),
@@ -143,6 +142,7 @@ class Widget_Menu extends Typecho_Widget
             array(_t('用户'), _t('管理用户'), 'manage-users.php', 'administrator', false, 'user.php'),
             array(_t('新增用户'), _t('新增用户'), 'user.php', 'administrator', true),
             array(array('Widget_Users_Edit', 'getMenuTitle'), array('Widget_Users_Edit', 'getMenuTitle'), 'user.php?uid=', 'administrator', true),
+			array(_t('独立页面'), _t('管理独立页面'), 'manage-pages.php', 'editor', false, 'write-page.php'),
         ),
         array(
             array(_t('基本'), _t('基本设置'), 'options-general.php', 'administrator'),

@@ -54,6 +54,16 @@ class Widget_Abstract_Contents extends Widget_Abstract
         return $this->date->word();
     }
 
+	protected function ___lastWord(){
+		if($this->lastComment){
+			$lastComment = new Typecho_Date($this->lastComment);
+			return $lastComment->word();
+		}else{
+			return $this->date->word();
+		}
+		
+	}
+	
     /**
      * 获取父id
      *
@@ -259,7 +269,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
         // modified_by_jiangmuzi 2015.09.22 增加查询字段
         return $this->db->select('table.contents.cid', 'table.contents.title', 'table.contents.slug', 'table.contents.created', 'table.contents.authorId',
         'table.contents.modified', 'table.contents.type', 'table.contents.status', 'table.contents.text', 'table.contents.commentsNum', 'table.contents.order',
-        'table.contents.template', 'table.contents.password', 'table.contents.allowComment', 'table.contents.allowPing', 'table.contents.allowFeed',
+        'table.contents.template', 'table.contents.password', 'table.contents.allowComment', 'table.contents.allowFeed',
         'table.contents.parent','table.contents.viewsNum','table.contents.lastUid','table.contents.lastComment')->from('table.contents');
         // end modified
     }
@@ -278,6 +288,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
             'title'         =>  empty($content['title']) ? NULL : htmlspecialchars($content['title']),
             'created'       =>  empty($content['created']) ? $this->options->gmtTime : $content['created'],
             'modified'      =>  $this->options->gmtTime,
+            'lastComment'   =>  $this->options->gmtTime,
             'text'          =>  empty($content['text']) ? NULL : $content['text'],
             'order'         =>  empty($content['order']) ? 0 : intval($content['order']),
             'authorId'      =>  isset($content['authorId']) ? $content['authorId'] : $this->user->uid,
@@ -287,7 +298,6 @@ class Widget_Abstract_Contents extends Widget_Abstract
             'password'      =>  empty($content['password']) ? NULL : $content['password'],
             'commentsNum'   =>  empty($content['commentsNum']) ? 0 : $content['commentsNum'],
             'allowComment'  =>  !empty($content['allowComment']) && 1 == $content['allowComment'] ? 1 : 0,
-            'allowPing'     =>  !empty($content['allowPing']) && 1 == $content['allowPing'] ? 1 : 0,
             'allowFeed'     =>  !empty($content['allowFeed']) && 1 == $content['allowFeed'] ? 1 : 0,
             'parent'        =>  empty($content['parent']) ? 0 : intval($content['parent'])
         );
@@ -332,7 +342,6 @@ class Widget_Abstract_Contents extends Widget_Abstract
             'status'        =>  empty($content['status']) ? 'publish' : $content['status'],
             'password'      =>  empty($content['password']) ? NULL : $content['password'],
             'allowComment'  =>  !empty($content['allowComment']) && 1 == $content['allowComment'] ? 1 : 0,
-            'allowPing'     =>  !empty($content['allowPing']) && 1 == $content['allowPing'] ? 1 : 0,
             'allowFeed'     =>  !empty($content['allowFeed']) && 1 == $content['allowFeed'] ? 1 : 0,
             'parent'        =>  empty($content['parent']) ? 0 : intval($content['parent'])
         );
@@ -611,7 +620,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
      */
     public function getTemplates()
     {
-        $files = glob($this->options->themeFile($this->options->theme, '*.php'));
+        $files = glob($this->options->themeFile($this->options->theme.'/page', '*.php'));
         $result = array();
 
         foreach ($files as $file) {
@@ -854,7 +863,7 @@ class Widget_Abstract_Contents extends Widget_Abstract
                 $allow &= ($this->user->pass('editor', true) || $this->authorId == $this->user->uid);
             } else {
                 /** 对自动关闭反馈功能的支持 */
-                if (('ping' == $permission || 'comment' == $permission) && $this->options->commentsPostTimeout > 0 &&
+                if (('comment' == $permission) && $this->options->commentsPostTimeout > 0 &&
                 $this->options->commentsAutoClose) {
                     if ($this->options->gmtTime - $this->created > $this->options->commentsPostTimeout) {
                         return false;

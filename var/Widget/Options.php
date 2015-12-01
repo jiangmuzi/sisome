@@ -193,7 +193,7 @@ class Widget_Options extends Typecho_Widget
      */
     protected function ___loginUrl()
     {
-        return Typecho_Common::url('login', $this->rootUrl);
+        return Typecho_Common::url('login', $this->index);
     }
 
     /**
@@ -216,7 +216,7 @@ class Widget_Options extends Typecho_Widget
      */
     protected function ___registerUrl()
     {
-        return Typecho_Common::url('register.php', $this->adminUrl);
+        return Typecho_Common::url('register', $this->index);
     }
 
     /**
