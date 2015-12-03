@@ -11,6 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 class Widget_Users_Credits extends Widget_Abstract_Credits
 {
+	
     /**
      * @return the $_currentPage
      */
@@ -27,19 +28,26 @@ class Widget_Users_Credits extends Widget_Abstract_Credits
      */
     protected function isSetMaxNum($uid,$type){
         if($this->_creditType[$type]['max']==0) return true;
-        $date = strtotime(date('Y-m-d'));
-        $num = $this->size($this->db->select()->where('type = ? AND uid = ? AND created > ?', $type, $uid, $date));
+		$select = $this->db->select()->where('type = ? AND uid = ?', $type, $uid);
+		if($this->_creditType[$type]['cycle']==1){
+			$date = strtotime(date('Y-m-d'));
+			$select->where('created > ?',$date);
+		}
+        
+        $num = $this->size($select);
         return $num < $this->_creditType[$type]['max'] ? true :false;
     }
     
-    public function setUserCredits($uid,$type){
+    public function setUserCredits($uid,$type,$srcId){
         $creditsName = 'credits'.ucfirst($type);
         if(!$this->options->$creditsName){
             return;
         }
+		$srcId = is_null($srcId) ? 0 : $srcId;
         if($this->isSetMaxNum($uid, $type)){
             $data = array(
                 'uid'=>$uid,
+				'srcId'=>$srcId,
                 'type'=>$type,
                 'amount'=>$this->options->$creditsName,
                 'created'=>$this->options->gmtTime
@@ -53,7 +61,6 @@ class Widget_Users_Credits extends Widget_Abstract_Credits
 				return;
 			}
 			
-			
 			$inviter = $this->widget('Widget_Users_Query@name_'.$user->extend['inviter'],'name='.$user->extend['inviter']);
 			
 			if(!$this->isSetMaxNum($inviter->uid, 'inviter')){
@@ -61,6 +68,7 @@ class Widget_Users_Credits extends Widget_Abstract_Credits
 			}
 			$data = array(
                 'uid'=>$inviter->uid,
+				'srcId'=>$uid,
                 'type'=>'inviter',
                 'amount'=>$this->options->$creditsName,
                 'created'=>$this->options->gmtTime

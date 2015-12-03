@@ -99,7 +99,7 @@ class Widget_Contents_Publish extends Widget_Abstract_Contents implements Widget
             /** 发布一个新内容 */
             $realId = $this->insert($contents);
             if($realId>0){
-                Widget_Common::credits('publish');
+                Widget_Common::credits('publish',null,$realId);
             }
         }
         

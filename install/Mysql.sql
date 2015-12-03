@@ -45,7 +45,6 @@ CREATE TABLE `typecho_contents` (
   `password` varchar(32) default NULL,
   `commentsNum` int(10) unsigned default '0',
   `allowComment` char(1) default '0',
-  `allowPing` char(1) default '0',
   `allowFeed` char(1) default '0',
   `parent` int(10) unsigned default '0',
   `viewsNum` int(10) unsigned default '0',

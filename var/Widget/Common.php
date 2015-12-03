@@ -60,7 +60,7 @@ class Widget_Common
      * 触发的积分规则
      * @param string $type
      */
-    public static function credits($type,$uid=null){
+    public static function credits($type,$uid=null,$srcId = null){
 		if($uid){
 			$user = Typecho_Widget::widget('Widget_Users_Query@uid_'.$uid,'uid='.$uid);
 		}else{
@@ -68,7 +68,7 @@ class Widget_Common
 		}
         
         if($user->have()){
-            Typecho_Widget::widget('Widget_Users_Credits')->setUserCredits($user->uid,$type);
+            Typecho_Widget::widget('Widget_Users_Credits')->setUserCredits($user->uid,$type,$srcId);
         }
     } 
     /**

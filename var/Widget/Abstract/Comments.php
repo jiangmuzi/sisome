@@ -306,11 +306,45 @@ class Widget_Abstract_Comments extends Widget_Abstract
 		if($value['authorId']){
 			$value['poster'] = Typecho_Widget::widget('Widget_Users_Query@uid_' . $value['authorId'], array('uid' => $value['authorId']));
 		}
+		$this->searchAt($value,true);
 		// end modified
         $value = $this->pluginHandle(__CLASS__)->filter($value, $this);
         return $value;
     }
-
+	/**
+     * 匹配评论中At信息
+     *
+     * @access public
+     * @param array $value 需要匹配的评论数据
+     * @param bool $replaceUrl 是否把at替换为链接
+     * @return array
+     */
+	public function searchAt(&$comment,$replaceUrl=false){
+		$pattern = "/@([^@^\\s^:]{1,})([\\s\\:\\,\\;]{0,1})/";
+		
+		$search = $replace  = $atArr = array();
+        preg_match_all ( $pattern, $comment['text'], $matches );
+		if(!empty($matches[1])){
+            $matches[1] = array_unique($matches[1]);
+            foreach($matches[1] as $name){
+                if(empty($name)) continue;
+                $atUser = $this->widget('Widget_Users_Query@name_'.$name,array('name'=>$name));
+                if(!$atUser->have()) continue;
+                $search[] = '@'.$name;
+                $replace[] = '<a href="'.$atUser->ucenter.'" target="_blank">@'.$name.'</a>';
+				if($comment['authorId'] != $atUser->uid && $atUser->uid != $comment['ownerId']) {
+                    $atArr[] = array(
+                        'uid'=>$atUser->uid,
+                        'type'=>'at'
+                    );
+                }
+            }
+            if(!empty($search) && $replaceUrl){
+                $comment['text'] = str_replace(@$search, @$replace, $comment['text']);
+            }
+        }
+		return $atArr;
+	}
     /**
      * 将每行的值压入堆栈
      *
