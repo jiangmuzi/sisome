@@ -91,7 +91,7 @@ class Widget_Ajax extends Widget_Abstract_Options implements Widget_Interface_Do
         if ($client) {
             $client->setHeader('User-Agent', $this->options->generator)
                 ->setTimeout(10)
-                ->send('http://www.sisome.com/feed/tag/sisome/');
+                ->send('http://www.sisome.com/feed/go/sisome/');
 
             /** 匹配内容体 */
             $response = $client->getResponseBody();

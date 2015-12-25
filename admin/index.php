@@ -82,7 +82,7 @@ $stat = Typecho_Widget::widget('Widget_Stat');
                         <?php while($comments->next()): ?>
                         <li>
                             <span><?php $comments->date('n.j'); ?></span>
-                            <a href="<?php $comments->permalink(); ?>" class="title"><?php $comments->author(true); ?></a>:
+                            <a href="<?php $comments->permalink(); ?>" class="title"><?php $comments->poster->screenName(); ?></a>:
                             <?php $comments->excerpt(35, '...'); ?>
                         </li>
                         <?php endwhile; ?>

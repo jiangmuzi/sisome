@@ -10,10 +10,14 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <div id="main">
     <div class="box">
     <div class="head">
-		<?php Typecho_Widget::widget('Widget_Metas_Category_List')->listNodes(array('node'=>'','cate'=>'<a class="tab" href="{permalink}">{name}</a>')); ?>
-        <a class="tab fr" href="<?php $this->options->index('/recent');?>"><?php _e('更多');?></a>
+		<?php Typecho_Widget::widget('Widget_Metas_Category_List')->listNodes(array('node'=>'','cateCurrent'=>'active','cate'=>'<a class="tab {cateCurrent}" href="/?tab={slug}">{name}</a>')); ?>
+        <?php if($this->user->hasLogin()):?>
+			<a class="tab <?php if($this->request->tab=='nodes')echo 'active';?>" href="<?php $this->options->index('/?tab=nodes');?>"><?php _e('节点');?></a>
+			<a class="tab <?php if($this->request->tab=='users')echo 'active';?>" href="<?php $this->options->index('/?tab=users');?>"><?php _e('关注');?></a>
+		<?php endif;?>
+		<a class="tab fr" href="<?php $this->options->index('/recent');?>"><?php _e('更多');?></a>
     </div>
-    <?php $this->widget('Widget_Contents_Post_List@indexRecent', 'sort=lastComment&limit=30')->to($archives);?>
+    <?php $this->widget('Widget_Contents_Post_Home@indexRecent', 'sort=lastComment&limit=30')->to($archives);?>
     <?php if($archives->have()):?>
 	<?php while($archives->next()): ?>
         <article class="cell post">
@@ -31,9 +35,16 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 				<li>&nbsp;&bull;&nbsp;最后回复来自：<strong><a href="<?php $archives->lastAuthor->ucenter();?>"><?php $archives->lastAuthor->name();?></a></strong></li>
 				<?php endif;?>
 			</ul>
+			<?php if($archives->commentsNum):?>
 			<div class="post-reply"><a href="<?php $archives->permalink() ?>"><?php $archives->commentsNum('%d'); ?></a></div>
-        </article>
+			<?php endif;?>
+		</article>
 	<?php endwhile; ?>
+	
+	<?php else: ?>
+		<article class="cell">
+		<p class="aligncenter fade">还没有内容!</p>
+		</article>
 	<?php endif;?>
     </div>
     <div class="box">

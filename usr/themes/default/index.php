@@ -17,7 +17,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     <div class="head">
         <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title();?></a> &nbsp;&nbsp;&raquo;&nbsp;&nbsp;
 		<?php if ($this->is('index') || $this->is('front')): ?><!-- 页面为首页时 -->
-			<?php _e('最新发布的主题');?>
+			<?php _e('最近的主题');?>
 		<?php elseif ($this->is('post')): ?><!-- 页面为文章单页时 -->
 			<?php $this->category(); ?> &raquo; <?php $this->title(); ?>
 		<?php else: ?><!-- 页面为其他页时 -->
@@ -27,7 +27,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		  <span class="fade"><?php _e('主题总数'); ?></span>
 		  <strong class="gray"><?php echo $this->getTotal();?></strong>
 		  
-			<?php if($this->is('tag') && $this->user->hasLogin()):?>
+			<?php if($this->user->hasLogin()):?>
 			     <span class="snow">&nbsp;•&nbsp;</span>
 				<a class="add_favorite" <?php if($this->parameter->isFavorite):?>data-fid="<?php $this->parameter->isFavorite();?>"<?php endif;?> data-type="tag" data-slug="<?php echo $this->getArchiveSlug();?>" href="javascript:;"><?php if($this->parameter->isFavorite){_e('取消收藏');}else{_e('加入收藏');}?></a>
 			<?php endif;?>
@@ -71,7 +71,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 					<li>&nbsp;&bull;&nbsp;最后回复来自：<strong><a href="<?php $this->lastAuthor->ucenter();?>"><?php $this->lastAuthor->name();?></a></strong></li>
 					<?php endif;?>
     			</ul>
-    			<div class="post-reply"><a href="<?php $this->permalink() ?>"><?php $this->commentsNum('%d'); ?></a></div>
+				<?php if($this->commentsNum):?>
+					<div class="post-reply"><a href="<?php $this->permalink() ?>"><?php $this->commentsNum('%d'); ?></a></div>
+				<?php endif;?>
             </article>
     	<?php endwhile; ?>
 	<?php else:?>
