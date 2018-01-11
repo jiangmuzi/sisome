@@ -67,15 +67,28 @@ class Util_Mail{
     protected static function putAsyncMail($filename){
         $options = Typecho_Widget::widget('Widget_Options');
         $siteUrl = ($options->rewrite)?$options->siteUrl:$options->siteUrl.'index.php';
+        $get='do=sendmail&name='.$filename;
+        if(function_exists('curl_init')){
+            $url = rtrim($siteUrl, '/').'/action/misc?'.$get;
+            $ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+			if(false !== strpos($url, 'https')){
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			}
+			curl_exec($ch);
+			curl_close($ch);
+			return;
+        }
         $dmpt=parse_url($siteUrl);
-    
+        
         $host = $dmpt['host'];
         $port = isset($dmpt['port'])?$dmpt['port']:80;
     
         if(substr($dmpt['path'], -1) != '/') $dmpt['path'] .= '/';
-        $url = $dmpt['path'].'action/forum';
-    
-        $get='do=sendmail&name='.$filename;
+        $url = $dmpt['path'].'action/misc';
+
         $head = "GET ". $url . "?" . $get . " HTTP/1.0\r\n";
         $head .= "Host: " . $host . "\r\n";
         $head .= "\r\n";
@@ -97,6 +110,9 @@ class Util_Mail{
         }
     }
     public static function getDIr(){
+        if(!is_dir(__TYPECHO_ROOT_DIR__ . '/var/tmp/')){
+            mkdir(__TYPECHO_ROOT_DIR__ . '/var/tmp/', 0777, true);
+        }
         return __TYPECHO_ROOT_DIR__ . '/var/tmp/';
     } 
 }
